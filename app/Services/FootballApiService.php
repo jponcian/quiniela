@@ -18,12 +18,13 @@ class FootballApiService
 
     public function syncMatches($league = 1, $season = 2026)
     {
-        $response = Http::withHeaders([
+        $response = Http::withoutVerifying()->withHeaders([
             'x-apisports-key' => $this->key
         ])->get("{$this->url}/fixtures", [
             'league' => $league,
             'season' => $season
         ]);
+
 
         if ($response->successful()) {
             $fixtures = $response->json()['response'];

@@ -13,14 +13,15 @@
             @csrf
             
             <div class="mb-4">
-                <label class="block text-slate-400 text-xs font-bold uppercase mb-2">Correo Electrónico</label>
-                <input type="email" name="email" required
+                <label class="block text-slate-400 text-xs font-bold uppercase mb-2">Cédula de Identidad</label>
+                <input type="text" name="cedula" required
                     class="w-full glass bg-slate-900/50 border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-emerald outline-none transition"
-                    placeholder="usuario@ejemplo.com">
-                @error('email')
+                    placeholder="V12345678">
+                @error('cedula')
                     <p class="mt-2 text-xs text-red-500 font-bold uppercase">{{ $message }}</p>
                 @enderror
             </div>
+
 
             <div class="mb-6">
                 <label class="block text-slate-400 text-xs font-bold uppercase mb-2">Contraseña</label>

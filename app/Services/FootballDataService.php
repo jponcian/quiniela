@@ -18,7 +18,7 @@ class FootballDataService
 
     public function syncMatches($competition = 'WC')
     {
-        $response = Http::withHeaders([
+        $response = Http::withoutVerifying()->withHeaders([
             'X-Auth-Token' => $this->key
         ])->get("{$this->url}/competitions/{$competition}/matches");
 

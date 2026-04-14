@@ -27,17 +27,11 @@
                 <p id="searchStatus" class="mt-2 text-[10px] font-bold uppercase hidden animate-pulse"></p>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                    <label class="block text-slate-400 text-xs font-bold uppercase mb-2">Nombres</label>
-                    <input type="text" name="name" id="name" required
-                        class="w-full glass bg-slate-900/50 border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-emerald outline-none transition">
-                </div>
-                <div>
-                    <label class="block text-slate-400 text-xs font-bold uppercase mb-2">Apellidos</label>
-                    <input type="text" name="lastname" id="lastname" required
-                        class="w-full glass bg-slate-900/50 border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-emerald outline-none transition">
-                </div>
+            <div class="mb-4">
+                <label class="block text-slate-400 text-xs font-bold uppercase mb-2">Nombre Completo</label>
+                <input type="text" name="name" id="name" required
+                    class="w-full glass bg-slate-900/50 border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-emerald outline-none transition"
+                    placeholder="Ingresa tu cédula para autocompletar">
             </div>
 
             <div class="mb-4">
@@ -45,13 +39,6 @@
                 <input type="text" name="whatsapp" id="whatsapp" required
                     class="w-full glass bg-slate-900/50 border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-emerald outline-none transition"
                     placeholder="04121234567">
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-slate-400 text-xs font-bold uppercase mb-2">Ccorreo Electrónico</label>
-                <input type="email" name="email" id="email" required
-                    class="w-full glass bg-slate-900/50 border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-emerald outline-none transition"
-                    placeholder="usuario@ejemplo.com">
             </div>
 
             <div class="mb-8">
@@ -72,36 +59,61 @@
 </div>
 
 <script>
-    document.getElementById('btnSearch').addEventListener('click', async () => {
-        const cedula = document.getElementById('cedula').value;
-        const status = document.getElementById('searchStatus');
-        const btn = document.getElementById('btnSearch');
+    const cedulaInput = document.getElementById('cedula');
+    const nameInput = document.getElementById('name');
+    const status = document.getElementById('searchStatus');
+    const icon = document.getElementById('cedulaIcon');
 
-        if(!cedula) return;
+    cedulaInput.addEventListener('change', async function() {
+        const cedula = this.value.trim();
+        if (cedula.length < 7) return;
 
-        status.textContent = 'Buscando datos...';
+        // Efecto visual de carga
+        status.textContent = 'CONSULTANDO IDENTIDAD...';
         status.className = 'mt-2 text-[10px] font-bold uppercase block text-brand-yellow animate-pulse';
-        btn.disabled = true;
+        nameInput.value = 'ESPERANDO RESPUESTA...';
+        nameInput.readOnly = true;
+        nameInput.classList.add('opacity-50');
+        
+        icon.innerHTML = `<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
 
         try {
-            const response = await fetch(`/api/check-cedula?cedula=${cedula}`);
-            const data = await response.json();
+            const response = await fetch(`/api/check-cedula?cedula=${encodeURIComponent(cedula)}`);
+            const result = await response.json();
 
-            if(data && data.payload) {
-                document.getElementById('name').value = data.payload.nombre;
-                document.getElementById('lastname').value = data.payload.apellido;
-                status.textContent = '¡Datos encontrados!';
+            if (result.success) {
+                const p = result.data;
+                // Autocompletar nombre (manejando diferentes posibles llaves de la API)
+                const firstName = p.nombre || p.nombres || '';
+                const lastName = p.apellido || p.apellidos || '';
+                nameInput.value = `${firstName} ${lastName}`.trim().toUpperCase();
+                
+                status.textContent = 'REGISTRO ENCONTRADO';
                 status.className = 'mt-2 text-[10px] font-bold uppercase block text-brand-emerald';
+                icon.innerHTML = `<svg class="w-5 h-5 text-brand-emerald" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
             } else {
-                status.textContent = 'No se encontraron datos. Ingresa manualmente.';
+                status.textContent = 'CÉDULA NO ENCONTRADA - INGRESA MANUALMENTE';
                 status.className = 'mt-2 text-[10px] font-bold uppercase block text-red-500';
+                nameInput.value = '';
+                nameInput.readOnly = false;
+                nameInput.classList.remove('opacity-50');
+                nameInput.focus();
+                icon.innerHTML = `<svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
             }
         } catch (error) {
-            status.textContent = 'Error al conectar con el servidor.';
+            status.textContent = 'ERROR DE SERVIDOR';
             status.className = 'mt-2 text-[10px] font-bold uppercase block text-red-500';
-        } finally {
-            btn.disabled = false;
+            nameInput.value = '';
+            nameInput.readOnly = false;
+            nameInput.classList.remove('opacity-50');
+            icon.innerHTML = `<svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
         }
     });
+
+    // Validar que solo se ingresen números
+    cedulaInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
 </script>
+
 @endsection
