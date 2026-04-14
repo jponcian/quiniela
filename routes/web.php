@@ -6,11 +6,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PredictionController;
+use App\Http\Controllers\PredictionPdfController;
 
 Route::get('/', [HomeController::class, 'index']);
 
 // Rutas de Predicciones (API)
 Route::post('/api/predictions', [PredictionController::class, 'store'])->middleware('auth');
+Route::get('/mis-pronosticos/pdf', [PredictionPdfController::class, 'download'])->middleware('auth')->name('predictions.pdf');
 
 // Rutas de Registro
 Route::get('/registro', [RegisterController::class, 'show']);

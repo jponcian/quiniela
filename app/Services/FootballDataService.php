@@ -26,6 +26,15 @@ class FootballDataService
             $matches = $response->json()['matches'];
 
             foreach ($matches as $match) {
+                $teamA = $match['homeTeam']['name'];
+                $teamB = $match['awayTeam']['name'];
+
+                // Filtrar solo Barcelona y Real Madrid
+                $allowedTeams = ['FC Barcelona', 'Real Madrid CF'];
+                if (!in_array($teamA, $allowedTeams) && !in_array($teamB, $allowedTeams)) {
+                    continue;
+                }
+
                 Game::updateOrCreate(
                     ['api_id' => $match['id']],
                     [

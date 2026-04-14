@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Models\Prediction;
 use App\Models\Game;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PredictionController extends Controller
@@ -33,8 +32,8 @@ class PredictionController extends Controller
                 'game_id' => $game->id
             ],
             [
-                'score_a' => $request->score_a,
-                'score_b' => $request->score_b,
+                'home_score' => $request->score_a,
+                'away_score' => $request->score_b,
                 'points_earned' => 0 // Se calcularán después del partido
             ]
         );

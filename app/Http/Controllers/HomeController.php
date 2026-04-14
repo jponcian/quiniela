@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 use App\Models\Game;
+use App\Models\Prediction;
 
 class HomeController extends Controller
 {
@@ -28,8 +29,16 @@ class HomeController extends Controller
                                       return $game->match_date->isAfter($now) && !$game->match_date->isToday();
                                   });
 
-        $finishedGames = $allGames->where('status', 'finished')->take(10); // Solo los últimos 10 para no saturar
+        $finishedGames = $allGames->where('status', 'finished')->take(10);
 
-        return view('welcome', compact('liveGames', 'todayGames', 'upcomingGames', 'finishedGames'));
+        // Cargar predicciones del usuario autenticado, indexadas por game_id
+        $userPredictions = collect();
+        if (Auth::check()) {
+            $userPredictions = Prediction::where('user_id', Auth::id())
+                ->get()
+                ->keyBy('game_id');
+        }
+
+        return view('welcome', compact('liveGames', 'todayGames', 'upcomingGames', 'finishedGames', 'userPredictions'));
     }
 }
