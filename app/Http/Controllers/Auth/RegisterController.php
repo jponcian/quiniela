@@ -64,11 +64,15 @@ class RegisterController extends Controller
         Auth::login($user);
 
 
-        // Envío de WhatsApp de Bienvenida
-        $this->whatsappService->sendMessage(
-            $user->whatsapp, 
-            "¡Hola {$user->name}! Bienvenido a la Quiniela Mundialista 2026. ¡Mucha suerte con tus pronósticos!"
-        );
+        // Envío de WhatsApp de Bienvenida (falla silenciosamente si el servicio no está disponible)
+        try {
+            $this->whatsappService->sendMessage(
+                $user->whatsapp,
+                "¡Hola {$user->name}! Bienvenido a la Quiniela Mundialista 2026. ¡Mucha suerte con tus pronósticos!"
+            );
+        } catch (\Exception $e) {
+            \Log::warning('WhatsApp bienvenida no enviado: ' . $e->getMessage());
+        }
 
         return redirect('/')->with('success', 'Bienvenido a la Quiniela');
     }

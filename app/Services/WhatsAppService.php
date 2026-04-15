@@ -24,12 +24,12 @@ class WhatsAppService
             $number = '58' . ltrim($number, '0');
         }
 
-        $response = Http::withHeaders([
+        $response = Http::timeout(5)->withHeaders([
             'apikey' => $this->key
         ])->post("{$this->url}/message/sendText/{$this->instance}", [
-            'number' => $number,
-            'text' => $message,
-            'delay' => 1200,
+            'number'      => $number,
+            'text'        => $message,
+            'delay'       => 1200,
             'linkPreview' => true
         ]);
 
