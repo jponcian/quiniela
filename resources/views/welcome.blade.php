@@ -32,12 +32,12 @@
     <div class="glass p-6 sm:p-8 rounded-3xl border border-white/10 text-center hover:border-brand-emerald/40 transition">
         <span class="text-3xl mb-3 block">🔥</span>
         <h3 class="text-base font-bold text-white uppercase mb-2">Marcador Exacto</h3>
-        <p class="text-slate-500 text-xs leading-relaxed">Si pegas el resultado exacto (ej. 2-1), te llevas <span class="text-brand-emerald font-black">3 PUNTOS</span>.</p>
+        <p class="text-slate-500 text-xs leading-relaxed">Si pegas el resultado exacto (ej. 2-1), te llevas <span class="text-brand-emerald font-black">5 PUNTOS</span>.</p>
     </div>
     <div class="glass p-6 sm:p-8 rounded-3xl border border-white/10 text-center hover:border-brand-yellow/40 transition">
         <span class="text-3xl mb-3 block">⚽</span>
         <h3 class="text-base font-bold text-white uppercase mb-2">Acierto Parcial</h3>
-        <p class="text-slate-500 text-xs leading-relaxed">Si aciertas el ganador o empate, obtienes <span class="text-brand-yellow font-black">1 PUNTO</span>.</p>
+        <p class="text-slate-500 text-xs leading-relaxed">Si aciertas el ganador o empate, obtienes <span class="text-brand-yellow font-black">3 PUNTOS</span>.</p>
     </div>
     <div class="glass p-6 sm:p-8 rounded-3xl border border-white/10 text-center hover:border-slate-600 transition">
         <span class="text-3xl mb-3 block">⚡</span>
@@ -54,7 +54,7 @@
         <button class="px-4 sm:px-6 py-2 rounded-xl text-slate-400 hover:text-white font-bold text-xs sm:text-sm transition whitespace-nowrap">Eliminatorias</button>
     </div>
     <div class="relative group">
-        <input type="text" placeholder="Buscar equipo..."
+        <input type="text" id="searchInput" placeholder="Buscar equipo..."
             class="glass bg-slate-900/50 border-white/10 rounded-2xl px-10 py-3 text-sm focus:ring-2 focus:ring-brand-emerald outline-none transition w-full sm:w-56">
         <svg class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 group-focus-within:text-brand-emerald transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -122,6 +122,90 @@
 </section>
 
 <script>
+<!-- REGLAS Y PREMIOS -->
+<section class="mb-12 glass p-8 sm:p-12 rounded-[2.5rem] border border-white/10 relative overflow-hidden">
+    <div class="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
+        <span class="text-9xl">💰</span>
+    </div>
+    <div class="relative z-10">
+        <h2 class="text-3xl sm:text-4xl font-black text-white uppercase italic tracking-tighter mb-6">Pozo de Premios</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div>
+                <p class="text-slate-400 text-sm sm:text-base leading-relaxed mb-6">
+                    El 95% del pozo acumulado será repartido entre los mejores participantes al final de la temporada. ¡Cada acierto cuenta para subir en el ranking!
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 group">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-neon/20 flex items-center justify-center text-brand-neon font-black text-lg group-hover:scale-110 transition">1°</div>
+                        <div>
+                            <h4 class="text-white font-bold text-sm uppercase">60% del pozo</h4>
+                            <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Campeón Absoluto</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 group">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-emerald/20 flex items-center justify-center text-brand-emerald font-black text-lg group-hover:scale-110 transition">2°</div>
+                        <div>
+                            <h4 class="text-white font-bold text-sm uppercase">25% del pozo</h4>
+                            <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Subcampeón</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 group">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-yellow/20 flex items-center justify-center text-brand-yellow font-black text-lg group-hover:scale-110 transition">3°</div>
+                        <div>
+                            <h4 class="text-white font-bold text-sm uppercase">10% del pozo</h4>
+                            <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Tercer Lugar</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white/5 border border-white/5 rounded-3xl p-6">
+                <h4 class="text-white font-black uppercase text-xs tracking-widest mb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-brand-neon rounded-full"></span>
+                    Reglas de Empate
+                </h4>
+                <ul class="text-slate-400 text-xs space-y-3 leading-relaxed">
+                    <li class="flex gap-3"><span class="text-brand-emerald font-bold">01.</span> A igual puntaje, el sistema prioriza a quien tenga más marcadores exactos acertados.</li>
+                    <li class="flex gap-3"><span class="text-brand-emerald font-bold">02.</span> Si persiste el empate, se suman los premios de las posiciones involucradas y se reparten equitativamente.</li>
+                    <li class="flex gap-3"><span class="text-brand-emerald font-bold">03.</span> El ranking se actualiza en tiempo real tras cada partido finalizado.</li>
+                </ul>
+                <div class="mt-6 p-4 bg-brand-emerald/10 rounded-2xl border border-brand-emerald/20">
+                    <p class="text-brand-emerald text-[10px] font-black uppercase text-center tracking-tighter">El 5% restante del pozo es destinado a gastos administrativos y organización.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// BUSCADOR EN TIEMPO REAL
+document.getElementById('searchInput').addEventListener('input', function(e) {
+    const term = e.target.value.toLowerCase();
+    const cards = document.querySelectorAll('.game-card');
+    
+    cards.forEach(card => {
+        const teamA = card.getAttribute('data-team-a');
+        const teamB = card.getAttribute('data-team-b');
+        
+        if (teamA.includes(term) || teamB.includes(term)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    // Ocultar secciones vacías si no hay resultados
+    document.querySelectorAll('section').forEach(section => {
+        const visibleCards = section.querySelectorAll('.game-card[style="display: block;"]').length;
+        const totalCards = section.querySelectorAll('.game-card').length;
+        
+        if (totalCards > 0 && visibleCards === 0) {
+            section.classList.add('hidden');
+        } else {
+            section.classList.remove('hidden');
+        }
+    });
+});
+
 function showMoreMatches() {
     document.getElementById('extraMatches').classList.remove('hidden');
     document.getElementById('btnLoadMore').classList.add('hidden');

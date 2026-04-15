@@ -1,4 +1,6 @@
-<div class="glass p-6 rounded-3xl border {{ $game->isLocked() ? 'border-white/5' : 'border-white/10' }} hover:shadow-2xl hover:shadow-brand-emerald/5 transition-all group relative overflow-hidden">
+<div class="game-card glass p-6 rounded-3xl border {{ $game->isLocked() ? 'border-white/5' : 'border-white/10' }} hover:shadow-2xl hover:shadow-brand-emerald/5 transition-all group relative overflow-hidden" 
+     data-team-a="{{ strtolower($game->team_a) }}" 
+     data-team-b="{{ strtolower($game->team_b) }}">
     @if($game->isLocked() && $game->status != 'finished')
         <div class="absolute top-2 right-2 z-10">
             <span class="bg-brand-yellow/10 text-brand-yellow text-[8px] font-black px-2 py-0.5 rounded-full border border-brand-yellow/20 flex items-center gap-1">

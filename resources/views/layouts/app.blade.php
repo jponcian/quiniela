@@ -66,9 +66,10 @@
             <!-- Desktop Nav -->
             <nav class="hidden md:flex gap-6 text-sm font-semibold">
                 <a href="/" class="text-white hover:text-brand-emerald transition">Partidos</a>
-                <a href="#" class="text-slate-400 hover:text-white transition">Ranking</a>
+                <a href="{{ route('ranking') }}" class="text-slate-400 hover:text-white transition">Ranking</a>
+                <a href="{{ route('rules') }}" class="text-slate-400 hover:text-white transition">Reglas</a>
                 @auth
-                    <a href="#" class="text-slate-400 hover:text-white transition">Mis Predicciones</a>
+                    <a href="{{ route('predictions.pdf') }}" target="_blank" class="text-slate-400 hover:text-white transition">Mis Predicciones</a>
                 @endauth
             </nav>
 
@@ -124,9 +125,10 @@
         <div id="mobile-menu" class="md:hidden border-t border-white/5">
             <div class="px-4 py-4 flex flex-col gap-3">
                 <a href="/" class="text-white font-semibold py-2 border-b border-white/5">⚽ Partidos</a>
-                <a href="#" class="text-slate-400 font-semibold py-2 border-b border-white/5">🏆 Ranking</a>
+                <a href="{{ route('ranking') }}" class="text-slate-400 font-semibold py-2 border-b border-white/5">🏆 Ranking</a>
+                <a href="{{ route('rules') }}" class="text-slate-400 font-semibold py-2 border-b border-white/5">📜 Reglas</a>
                 @auth
-                    <a href="#" class="text-slate-400 font-semibold py-2 border-b border-white/5">📋 Mis Predicciones</a>
+                    <a href="{{ route('predictions.pdf') }}" target="_blank" class="text-slate-400 font-semibold py-2 border-b border-white/5">📋 Mis Predicciones</a>
                     <div class="flex items-center justify-between pt-2">
                         <span class="text-xs text-slate-400 font-bold uppercase truncate max-w-[200px]">{{ Auth::user()->name }}</span>
                         <form action="{{ route('logout') }}" method="POST">

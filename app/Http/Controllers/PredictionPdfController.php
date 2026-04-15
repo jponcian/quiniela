@@ -20,8 +20,8 @@ class PredictionPdfController extends Controller
 
         $totalPredictions = $predictions->count();
         $totalPoints      = $predictions->sum('points_earned');
-        $exactPredictions = $predictions->where('points_earned', 3)->count();
-        $partialPredictions = $predictions->where('points_earned', 1)->count();
+        $exactPredictions = $predictions->where('points_earned', 5)->count();
+        $partialPredictions = $predictions->where('points_earned', 3)->count();
 
         $pdf = Pdf::loadView('pdf.predictions', compact(
             'user',

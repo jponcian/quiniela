@@ -6,293 +6,192 @@
     @page { margin: 0; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-        font-family: DejaVu Sans, sans-serif;
-        background-color: #020617;
-        color: #e2e8f0;
+        font-family: Helvetica, Arial, sans-serif;
+        background-color: #ffffff;
+        color: #1e293b;
         width: 100%;
         min-height: 100%;
     }
 
     /* ── HEADER ─────────────────────────────────────────────── */
     .header {
-        background: linear-gradient(135deg, #0f172a 0%, #0d2040 50%, #0a3300 100%);
-        padding: 28px 36px 20px;
-        border-bottom: 3px solid #10b981;
-        position: relative;
-        overflow: hidden;
+        background-color: #f8fafc;
+        padding: 30px 40px;
+        border-bottom: 2px solid #10b981;
     }
     .header-badge {
         display: inline-block;
         background-color: #10b981;
-        color: #020617;
-        font-size: 7px;
+        color: #fff;
+        font-size: 8px;
         font-weight: bold;
-        letter-spacing: 2px;
+        padding: 4px 12px;
+        border-radius: 4px;
         text-transform: uppercase;
-        padding: 3px 10px;
-        border-radius: 20px;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
     .header h1 {
-        font-size: 30px;
+        font-size: 28px;
         font-weight: bold;
-        color: #ffffff;
-        letter-spacing: -1px;
-        line-height: 1;
+        color: #0f172a;
         text-transform: uppercase;
+        margin-bottom: 4px;
     }
     .header h1 span { color: #10b981; }
     .header-sub {
-        font-size: 9px;
+        font-size: 10px;
         color: #64748b;
-        letter-spacing: 1.5px;
         text-transform: uppercase;
-        margin-top: 4px;
-    }
-    .header-ball {
-        position: absolute;
-        right: 24px;
-        top: 16px;
-        font-size: 64px;
-        opacity: 0.12;
-    }
-    .header-meta {
-        display: table;
-        width: 100%;
-        margin-top: 16px;
-    }
-    .header-meta-cell {
-        display: table-cell;
-        vertical-align: middle;
-    }
-    .header-meta-cell.right { text-align: right; }
-    .user-name {
-        font-size: 13px;
         font-weight: bold;
-        color: #fff;
-        text-transform: uppercase;
+    }
+
+    .header-meta {
+        margin-top: 20px;
+        width: 100%;
+    }
+    .user-name {
+        font-size: 14px;
+        font-weight: bold;
+        color: #0f172a;
     }
     .user-label {
-        font-size: 8px;
-        color: #64748b;
-        letter-spacing: 1px;
+        font-size: 9px;
+        color: #94a3b8;
         text-transform: uppercase;
-    }
-    .generated-label {
-        font-size: 8px;
-        color: #475569;
-        letter-spacing: 0.5px;
+        font-weight: bold;
     }
 
     /* ── STATS BAR ──────────────────────────────────────────── */
     .stats-bar {
-        background: #0f172a;
-        border-bottom: 1px solid #1e293b;
-        padding: 12px 36px;
+        background: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 15px 40px;
     }
-    .stats-table { width: 100%; }
+    .stats-table { width: 100%; border-collapse: collapse; }
     .stat-cell {
-        display: table-cell;
         text-align: center;
-        vertical-align: middle;
-        border-right: 1px solid #1e293b;
-        padding: 0 24px;
+        border-right: 1px solid #e2e8f0;
+        padding: 10px;
     }
     .stat-cell:last-child { border-right: none; }
     .stat-number {
-        font-size: 22px;
+        font-size: 20px;
         font-weight: bold;
-        color: #10b981;
-        line-height: 1;
+        color: #0f172a;
     }
     .stat-label {
-        font-size: 7.5px;
-        color: #64748b;
-        letter-spacing: 1px;
+        font-size: 8px;
+        color: #94a3b8;
         text-transform: uppercase;
-        margin-top: 3px;
+        margin-top: 2px;
     }
 
-    /* ── SECTION TITLE ──────────────────────────────────────── */
-    .section-title {
-        font-size: 10px;
-        font-weight: bold;
-        color: #10b981;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        padding: 14px 36px 8px;
-        border-left: 3px solid #10b981;
-        margin: 0 0 0 36px;
-    }
-
-    /* ── PREDICTIONS TABLE ──────────────────────────────────── */
-    .table-wrap { padding: 0 36px 20px; }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    thead tr {
-        background: #0f172a;
-        border-bottom: 2px solid #10b981;
-    }
+    /* ── TABLE ──────────────────────────────────────────────── */
+    .table-wrap { padding: 20px 40px; }
+    table { width: 100%; border-collapse: collapse; }
     thead th {
-        font-size: 7.5px;
+        background: #f1f5f9;
+        font-size: 8px;
         font-weight: bold;
         color: #475569;
-        letter-spacing: 1.5px;
         text-transform: uppercase;
-        padding: 8px 10px;
+        padding: 10px;
         text-align: left;
+        border-bottom: 2px solid #e2e8f0;
     }
-    thead th.center { text-align: center; }
-    tbody tr {
-        border-bottom: 1px solid #1e293b;
-    }
-    tbody tr:nth-child(even) { background: #0b1120; }
-    tbody tr:last-child { border-bottom: none; }
     td {
-        padding: 9px 10px;
-        vertical-align: middle;
-        font-size: 9px;
-        color: #cbd5e1;
+        padding: 12px 10px;
+        font-size: 10px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
     }
-    td.center { text-align: center; }
-    .team-name { font-size: 10px; color: #fff; font-weight: bold; }
-    .team-vs { font-size: 7px; color: #475569; font-style: italic; }
-    .date-text { font-size: 8px; color: #64748b; }
+    .team-name { font-weight: bold; color: #0f172a; }
     .score-box {
         display: inline-block;
-        background: #1e293b;
-        border: 1px solid #334155;
-        border-radius: 4px;
-        padding: 3px 8px;
-        font-size: 13px;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        padding: 4px 8px;
         font-weight: bold;
-        color: #fff;
-        min-width: 26px;
+        border-radius: 4px;
+        min-width: 25px;
         text-align: center;
     }
-    .score-dash { font-size: 10px; color: #475569; padding: 0 3px; }
     .points-badge {
-        display: inline-block;
-        border-radius: 10px;
-        padding: 2px 8px;
-        font-size: 8.5px;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 9px;
         font-weight: bold;
     }
-    .points-3 { background: #064e3b; color: #10b981; }
-    .points-1 { background: #1a2e05; color: #84cc16; }
-    .points-0 { background: #1e293b; color: #64748b; }
-    .points-pending { background: #172039; color: #60a5fa; }
-    .status-pill {
-        display: inline-block;
-        border-radius: 10px;
-        padding: 2px 7px;
-        font-size: 7.5px;
-        font-weight: bold;
-        letter-spacing: 0.5px;
-    }
-    .pill-finished { background: #1e293b; color: #64748b; }
-    .pill-live { background: #3b0000; color: #f87171; }
-    .pill-upcoming { background: #0c2a19; color: #34d399; }
-    .pill-locked { background: #1a1508; color: #f59e0b; }
+    .points-5 { background: #dcfce7; color: #15803d; } /* Exacto */
+    .points-3 { background: #fef9c3; color: #a16207; } /* Parcial */
+    .points-0 { background: #f1f5f9; color: #64748b; }
+    .points-pending { border: 1px solid #e2e8f0; color: #94a3b8; }
 
     /* ── FOOTER ─────────────────────────────────────────────── */
     .footer {
-        background: #0f172a;
-        border-top: 1px solid #1e293b;
-        padding: 12px 36px;
-        margin-top: 10px;
+        padding: 20px 40px;
+        border-top: 1px solid #e2e8f0;
+        margin-top: 20px;
     }
-    .footer-table { width: 100%; }
-    .footer-left { display: table-cell; vertical-align: middle; }
-    .footer-right { display: table-cell; vertical-align: middle; text-align: right; }
-    .footer-brand {
-        font-size: 11px;
-        font-weight: bold;
-        color: #10b981;
-        text-transform: uppercase;
-    }
-    .footer-copy { font-size: 7.5px; color: #334155; margin-top: 2px; }
-    .footer-disclaimer {
-        font-size: 7px;
-        color: #334155;
-        font-style: italic;
-        max-width: 240px;
-        text-align: right;
-    }
-    .no-predictions {
-        text-align: center;
-        padding: 40px 0;
-        color: #475569;
-        font-size: 11px;
-        font-style: italic;
-    }
+    .footer-brand { font-size: 11px; font-weight: bold; color: #10b981; }
+    .footer-disclaimer { font-size: 8px; color: #94a3b8; font-style: italic; text-align: right; }
 </style>
 </head>
 <body>
 
-<!-- ── HEADER ─────────────────────────────────────────────── -->
 <div class="header">
-    <div class="header-ball">⚽</div>
-    <div class="header-badge">⚽ Quiniela Mundialista 2026</div>
-    <h1>Hoja de<br><span>Pronósticos</span></h1>
-    <div class="header-sub">La Liga · Temporada 2025/26</div>
+    <div class="header-badge">Quiniela Mundialista 2026</div>
+    <h1>Hoja de <span>Pronósticos</span></h1>
+    <div class="header-sub">Temporada 2025/26 · Listado de Usuario</div>
 
-    <div class="header-meta" style="margin-top:16px;">
-        <div class="header-meta-cell">
-            <div class="user-label">Participante</div>
-            <div class="user-name">{{ $user->name }}</div>
-            @if($user->cedula)
-                <div class="user-label" style="margin-top:2px;">C.I. {{ $user->cedula }}</div>
-            @endif
-        </div>
-        <div class="header-meta-cell right">
-            <div class="generated-label">Generado el {{ now()->timezone('America/Caracas')->translatedFormat('d \d\e F, Y — H:i') }}</div>
-        </div>
-    </div>
-</div>
-
-<!-- ── STATS BAR ──────────────────────────────────────────── -->
-<div class="stats-bar">
-    <table class="stats-table">
+    <table class="header-meta">
         <tr>
-            <td class="stat-cell" style="display:table-cell;">
-                <div class="stat-number">{{ $totalPredictions }}</div>
-                <div class="stat-label">Pronósticos</div>
+            <td>
+                <div class="user-label">Participante</div>
+                <div class="user-name">{{ $user->name }} {{ $user->lastname }}</div>
+                @if($user->cedula) <div style="font-size:10px; color:#64748b;">C.I. {{ $user->cedula }}</div> @endif
             </td>
-            <td class="stat-cell" style="display:table-cell;">
-                <div class="stat-number" style="color:#facc15;">{{ $totalPoints }}</div>
-                <div class="stat-label">Puntos Totales</div>
-            </td>
-            <td class="stat-cell" style="display:table-cell;">
-                <div class="stat-number" style="color:#a78bfa;">{{ $exactPredictions }}</div>
-                <div class="stat-label">Exactos (3 pts)</div>
-            </td>
-            <td class="stat-cell" style="display:table-cell;">
-                <div class="stat-number" style="color:#84cc16;">{{ $partialPredictions }}</div>
-                <div class="stat-label">Parciales (1 pt)</div>
+            <td style="text-align:right; vertical-align: bottom;">
+                <div class="user-label">Exportado el</div>
+                <div style="font-size:10px; color:#64748b;">{{ now()->timezone('America/Caracas')->format('d/m/Y - H:i') }}</div>
             </td>
         </tr>
     </table>
 </div>
 
-<!-- ── TABLE ──────────────────────────────────────────────── -->
-@if($predictions->count() > 0)
-<div style="padding: 16px 36px 4px;">
-    <div class="section-title" style="margin:0; padding: 0 0 0 10px;">Detalle de Pronósticos</div>
+<div class="stats-bar">
+    <table class="stats-table">
+        <tr>
+            <td class="stat-cell">
+                <div class="stat-number">{{ $totalPredictions }}</div>
+                <div class="stat-label">Pronósticos</div>
+            </td>
+            <td class="stat-cell">
+                <div class="stat-number" style="color: #10b981;">{{ $totalPoints }}</div>
+                <div class="stat-label">Puntos Totales</div>
+            </td>
+            <td class="stat-cell">
+                <div class="stat-number">{{ $exactPredictions }}</div>
+                <div class="stat-label">Exactos (5 pts)</div>
+            </td>
+            <td class="stat-cell">
+                <div class="stat-number">{{ $partialPredictions }}</div>
+                <div class="stat-label">Parciales (3 pts)</div>
+            </td>
+        </tr>
+    </table>
 </div>
+
 <div class="table-wrap">
     <table>
         <thead>
             <tr>
                 <th>#</th>
                 <th>Partido</th>
-                <th>Fecha</th>
-                <th class="center">Tu pronóstico</th>
-                <th class="center">Resultado</th>
-                <th class="center">Puntos</th>
-                <th class="center">Estado</th>
+                <th style="text-align:center">Pronóstico</th>
+                <th style="text-align:center">Resultado</th>
+                <th style="text-align:center">Puntos</th>
+                <th style="text-align:right">Estado</th>
             </tr>
         </thead>
         <tbody>
@@ -300,79 +199,56 @@
             @php
                 $game = $prediction->game;
                 $hasResult = in_array($game->status, ['finished', 'in_play']);
-                $pts = $prediction->points_earned ?? null;
+                $pts = $prediction->points_earned;
             @endphp
             <tr>
-                <td style="color:#475569; font-size:8px;">{{ $index + 1 }}</td>
+                <td style="color:#94a3b8">{{ $index + 1 }}</td>
                 <td>
-                    <span class="team-name">{{ $game->team_a }}</span>
-                    <span class="team-vs"> vs </span>
-                    <span class="team-name">{{ $game->team_b }}</span>
+                    <div class="team-name">{{ $game->team_a }} vs {{ $game->team_b }}</div>
+                    <div style="font-size:8px; color:#94a3b8">{{ $game->match_date->timezone('America/Caracas')->format('d M, H:i') }}</div>
                 </td>
-                <td>
-                    <span class="date-text">{{ $game->match_date->timezone('America/Caracas')->translatedFormat('d M, H:i') }}</span>
+                <td style="text-align:center">
+                    <span class="score-box">{{ $prediction->home_score }} - {{ $prediction->away_score }}</span>
                 </td>
-                <td class="center">
-                    <span class="score-box">{{ $prediction->home_score }}</span>
-                    <span class="score-dash">–</span>
-                    <span class="score-box">{{ $prediction->away_score }}</span>
-                </td>
-                <td class="center">
+                <td style="text-align:center">
                     @if($hasResult)
-                        <span class="score-box" style="border-color:{{ $game->status == 'finished' ? '#10b981' : '#f87171' }};">{{ $game->score_a }}</span>
-                        <span class="score-dash">–</span>
-                        <span class="score-box" style="border-color:{{ $game->status == 'finished' ? '#10b981' : '#f87171' }};">{{ $game->score_b }}</span>
+                        <span class="score-box" style="border-color:#10b981">{{ $game->score_a }} - {{ $game->score_b }}</span>
                     @else
-                        <span style="color:#334155; font-size:8px;">— / —</span>
+                        <span style="color:#cbd5e1">-</span>
                     @endif
                 </td>
-                <td class="center">
-                    @if($prediction->is_calculated && $pts !== null)
-                        @if($pts == 3)
-                            <span class="points-badge points-3">🏆 3 pts</span>
-                        @elseif($pts == 1)
-                            <span class="points-badge points-1">✓ 1 pt</span>
+                <td style="text-align:center">
+                    @if($prediction->is_calculated)
+                        @if($pts == 5)
+                            <span class="points-badge points-5">5 pts</span>
+                        @elseif($pts == 3)
+                            <span class="points-badge points-3">3 pts</span>
                         @else
                             <span class="points-badge points-0">0 pts</span>
                         @endif
                     @else
-                        <span class="points-badge points-pending">Pendiente</span>
+                        <span class="points-badge points-pending">Pend.</span>
                     @endif
                 </td>
-                <td class="center">
-                    @if($game->status == 'finished')
-                        <span class="status-pill pill-finished">Finalizado</span>
-                    @elseif($game->status == 'in_play')
-                        <span class="status-pill pill-live">En Vivo</span>
-                    @elseif($game->isLocked())
-                        <span class="status-pill pill-locked">Cerrado</span>
-                    @else
-                        <span class="status-pill pill-upcoming">Abierto</span>
-                    @endif
+                <td style="text-align:right; font-size:8px; font-weight:bold; color:#64748b">
+                    {{ strtoupper($game->status == 'finished' ? 'Final' : ($game->status == 'in_play' ? 'En Vivo' : 'Pendiente')) }}
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
 </div>
-@else
-<div class="table-wrap" style="padding-top:20px;">
-    <div class="no-predictions">No tienes pronósticos registrados aún.</div>
-</div>
-@endif
 
-<!-- ── FOOTER ─────────────────────────────────────────────── -->
 <div class="footer">
-    <table class="footer-table">
+    <table style="width:100%">
         <tr>
-            <td class="footer-left">
-                <div class="footer-brand">⚽ Quiniela2026</div>
-                <div class="footer-copy">© 2026 · Calabozo, Venezuela · Uso personal</div>
+            <td>
+                <div class="footer-brand">⚽ Quiniela2026 Virtual</div>
+                <div style="font-size:8px; color:#94a3b8 mt:2px;">© 2026 · Comprobante oficial de participación</div>
             </td>
-            <td class="footer-right">
-                <div class="footer-disclaimer">
-                    Sistema de puntuación: 3 pts por marcador exacto · 1 pt por acierto de resultado
-                </div>
+            <td class="footer-disclaimer">
+                Reglas: Exacto (5 pts) · Ganador/Empate (3 pts).<br>
+                Los puntos se confirman tras finalizar el partido oficial.
             </td>
         </tr>
     </table>

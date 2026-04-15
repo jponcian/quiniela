@@ -9,6 +9,8 @@ use App\Http\Controllers\PredictionController;
 use App\Http\Controllers\PredictionPdfController;
 
 Route::get('/', [HomeController::class, 'index']);
+Route::get('/ranking', [\App\Http\Controllers\RankingController::class, 'index'])->name('ranking');
+Route::view('/reglas', 'rules')->name('rules');
 
 // Rutas de Predicciones (API)
 Route::post('/api/predictions', [PredictionController::class, 'store'])->middleware('auth');

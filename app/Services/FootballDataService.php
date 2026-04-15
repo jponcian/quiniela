@@ -10,10 +10,12 @@ class FootballDataService
 {
     protected $key;
     protected $url = 'https://api.football-data.org/v4';
+    protected $whatsapp;
 
-    public function __construct()
+    public function __construct(\App\Services\WhatsAppService $whatsapp)
     {
         $this->key = config('services.football_data.key');
+        $this->whatsapp = $whatsapp;
     }
 
     public function syncMatches($competition = 'WC')
@@ -25,7 +27,7 @@ class FootballDataService
         if ($response->successful()) {
             $matches = $response->json()['matches'];
 
-            // Equipos de interés
+            // Equipos de interés (Opcional: puedes quitar este filtro si quieres traer todos)
             $allowedTeams = ['FC Barcelona', 'Real Madrid CF'];
 
             // Ordenar por fecha para procesar cronológicamente
@@ -38,19 +40,14 @@ class FootballDataService
                 $teamB = $match['awayTeam']['name'];
                 $status = strtoupper($match['status']);
 
-                // Solo partidos que aún no se han jugado
-                if (!in_array($status, ['TIMED', 'SCHEDULED'])) {
-                    continue;
-                }
-
-                // Solo partidos que involucren a Barcelona o Real Madrid
+                // Filtrar por equipos (Opcional, según tu lógica de La Liga)
                 $involvesAllowed = in_array($teamA, $allowedTeams) || in_array($teamB, $allowedTeams);
                 if (!$involvesAllowed) {
                     continue;
                 }
 
                 // Guardar el partido
-                Game::updateOrCreate(
+                $game = Game::updateOrCreate(
                     ['api_id' => $match['id']],
                     [
                         'team_a'      => $teamA,
@@ -69,18 +66,110 @@ class FootballDataService
 
                 $imported++;
 
-                // Detener DESPUÉS de guardar el Clásico (Barça vs Madrid o Madrid vs Barça)
-                $isClasico = in_array($teamA, $allowedTeams)
-                          && in_array($teamB, $allowedTeams);
-
-                if ($isClasico) {
-                    break; // El Clásico fue importado, no necesitamos más partidos
+                // Si el partido terminó, reconciliar predicciones
+                if ($status === 'FINISHED') {
+                    $this->reconcileMatch($game);
                 }
+
+                // Detener DESPUÉS de guardar el Clásico
+                $isClasico = in_array($teamA, $allowedTeams) && in_array($teamB, $allowedTeams);
+                if ($isClasico) break;
             }
+
+            // Después de sincronizar todo, refrescar posiciones del ranking
+            $this->updateGlobalRanking();
 
             return $imported;
         }
 
         return 0;
+    }
+
+    /**
+     * Calcula los puntos para todas las predicciones de un partido finalizado.
+     */
+    protected function reconcileMatch(Game $game)
+    {
+        $predictions = \App\Models\Prediction::where('game_id', $game->id)
+            ->where('is_calculated', false)
+            ->get();
+
+        foreach ($predictions as $prediction) {
+            $points = $prediction->calculatePoints();
+            
+            $prediction->update([
+                'points_earned' => $points,
+                'is_calculated' => true
+            ]);
+
+            // Actualizar acumulados del usuario
+            $user = $prediction->user;
+            if ($user) {
+                $user->points += $points;
+                if ($points == 5) $user->hits_exact++;
+                if ($points == 3) $user->hits_partial++;
+                $user->save();
+            }
+        }
+    }
+
+    /**
+     * Recalcula los puestos del ranking y notifica a los usuarios por WhatsApp.
+     */
+    protected function updateGlobalRanking()
+    {
+        $users = \App\Models\User::orderBy('points', 'desc')
+            ->orderBy('hits_exact', 'desc')
+            ->get();
+
+        $currentRank = 1;
+        $prevScore = null;
+        $prevExacts = null;
+
+        // Primero calculamos y guardamos todos los rangos nuevos
+        $reportData = [];
+
+        foreach ($users as $index => $user) {
+            if ($prevScore !== null && ($user->points < $prevScore || $user->hits_exact < $prevExacts)) {
+                $currentRank = $index + 1;
+            }
+
+            $oldRank = $user->previous_rank ?: $currentRank;
+            $user->previous_rank = $currentRank; // Para la próxima vez
+            $user->save();
+
+            // Determinamos flechita para el mensaje
+            $trendIcon = '⚪'; // estable
+            if ($currentRank < $oldRank) $trendIcon = '🟢 ▲';
+            elseif ($currentRank > $oldRank) $trendIcon = '🔴 ▼';
+
+            $reportData[] = [
+                'user' => $user,
+                'rank' => $currentRank,
+                'trend' => $trendIcon
+            ];
+
+            $prevScore = $user->points;
+            $prevExacts = $user->hits_exact;
+        }
+
+        // Enviamos notificaciones masivas (Broadcast)
+        foreach ($reportData as $data) {
+            $user = $data['user'];
+            if (!$user->whatsapp) continue;
+
+            $message = "¡Hola *{$user->name}*! ⚽\n\n"
+                     . "Se ha actualizado el ranking tras el último partido.\n\n"
+                     . "📍 Tu nueva posición: *#{$data['rank']}* {$data['trend']}\n\n"
+                     . "Ver tabla completa:\n" . url('/ranking') . "\n\n"
+                     . "📜 Revisa las reglas aquí:\n" . url('/reglas') . "\n\n"
+                     . "¡Sigue pronosticando y mucha suerte! 🍀";
+
+            try {
+                $this->whatsapp->sendMessage($user->whatsapp, $message);
+            } catch (\Exception $e) {
+                \Log::error("Error enviando WhatsApp a {$user->whatsapp}: " . $e->getMessage());
+            }
+        }
     }
 }
