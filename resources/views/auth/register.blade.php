@@ -48,7 +48,7 @@
 
             <div class="mb-4">
                 <label class="block text-slate-400 text-xs font-bold uppercase mb-2">Número WhatsApp</label>
-                <input type="text" name="whatsapp" id="whatsapp" required
+                <input type="tel" name="whatsapp" id="whatsapp" required
                     class="w-full glass bg-slate-900/50 border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-emerald outline-none transition"
                     placeholder="04121234567" value="{{ old('whatsapp') }}">
             </div>
@@ -150,6 +150,10 @@
 
     // Validar que solo se ingresen números
     cedulaInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    document.getElementById('whatsapp').addEventListener('input', function() {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
 </script>

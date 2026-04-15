@@ -77,13 +77,7 @@
             <div class="hidden md:flex items-center gap-3">
                 @auth
                     <span class="text-xs text-slate-400 font-bold uppercase truncate max-w-[140px]">{{ Auth::user()->name }}</span>
-                    <a href="{{ route('predictions.pdf') }}" target="_blank" title="Descargar pronósticos en PDF"
-                       class="flex items-center gap-1.5 text-slate-300 hover:text-brand-emerald border border-white/10 hover:border-brand-emerald/50 px-3 py-1.5 rounded-full text-xs font-bold transition-all group">
-                        <svg class="w-3.5 h-3.5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v11"/>
-                        </svg>
-                        PDF
-                    </a>
+
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="text-slate-400 hover:text-white transition text-xs font-bold underline">Salir</button>
@@ -100,15 +94,7 @@
 
             <!-- Mobile Right Side -->
             <div class="flex md:hidden items-center gap-2">
-                @auth
-                    <!-- PDF icon on mobile -->
-                    <a href="{{ route('predictions.pdf') }}" target="_blank"
-                       class="p-2 text-slate-400 hover:text-brand-emerald transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v11"/>
-                        </svg>
-                    </a>
-                @endauth
+
                 <!-- Hamburger -->
                 <button id="menu-btn" onclick="toggleMenu()" class="p-2 text-slate-400 hover:text-white transition" aria-label="Menú">
                     <svg id="icon-menu" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
