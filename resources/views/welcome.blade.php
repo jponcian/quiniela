@@ -20,9 +20,7 @@
                     REGÍSTRATE Y JUEGA
                 </a>
             @endguest
-            <a href="#como-jugar" class="px-7 py-3.5 bg-white/5 border border-white/10 text-white font-bold rounded-2xl hover:bg-white/10 transition text-sm">
-                ¿CÓMO FUNCIONA?
-            </a>
+
         </div>
     </div>
 </section>
@@ -49,9 +47,9 @@
 <!-- Filters Bar -->
 <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-8">
     <div class="flex gap-2 p-1 glass rounded-2xl border border-white/5 overflow-x-auto">
-        <button class="px-4 sm:px-6 py-2 rounded-xl bg-brand-emerald text-dark font-bold text-xs sm:text-sm shadow-lg shadow-brand-emerald/20 transition whitespace-nowrap">Todos</button>
-        <button class="px-4 sm:px-6 py-2 rounded-xl text-slate-400 hover:text-white font-bold text-xs sm:text-sm transition whitespace-nowrap">Fase de Grupos</button>
-        <button class="px-4 sm:px-6 py-2 rounded-xl text-slate-400 hover:text-white font-bold text-xs sm:text-sm transition whitespace-nowrap">Eliminatorias</button>
+        <button class="px-4 sm:px-6 py-2 rounded-xl text-slate-400 hover:text-white font-bold text-xs sm:text-sm transition whitespace-nowrap">Todos</button>
+        <button class="px-4 sm:px-6 py-2 rounded-xl bg-brand-emerald text-dark font-bold text-xs sm:text-sm shadow-lg shadow-brand-emerald/20 transition whitespace-nowrap">Fase de Grupos</button>
+        <button disabled class="px-4 sm:px-6 py-2 rounded-xl text-slate-500 font-bold text-xs sm:text-sm transition whitespace-nowrap cursor-not-allowed opacity-50">Eliminatorias (Próximamente)</button>
     </div>
     <div class="relative group">
         <input type="text" id="searchInput" placeholder="Buscar equipo..."
@@ -69,7 +67,7 @@
         <div class="w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
         <h2 class="text-xl sm:text-2xl font-black uppercase tracking-tighter italic">En Vivo Ahora</h2>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
         @foreach($liveGames as $game)
             @include('partials.game-card', ['game' => $game, 'isLive' => true])
         @endforeach
@@ -83,7 +81,7 @@
         <h2 class="text-xl sm:text-2xl font-black uppercase tracking-tighter italic border-l-4 border-brand-emerald pl-4">Juegos de Hoy</h2>
         <span class="text-slate-500 text-xs font-bold uppercase hidden sm:block">{{ now()->translatedFormat('d F, Y') }}</span>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
         @forelse($todayGames as $game)
             @include('partials.game-card', ['game' => $game])
         @empty
@@ -97,7 +95,7 @@
 <!-- PRÓXIMOS PARTIDOS -->
 <section class="mb-12">
     <h2 class="text-xl sm:text-2xl font-black uppercase tracking-tighter italic border-l-4 border-brand-yellow pl-4 mb-5">Próximos Encuentros</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 opacity-80 hover:opacity-100 transition-opacity">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 opacity-80 hover:opacity-100 transition-opacity">
         @foreach($upcomingGames->take(6) as $game)
             @include('partials.game-card', ['game' => $game])
         @endforeach
@@ -121,8 +119,7 @@
     @endif
 </section>
 
-<script>
-<!-- REGLAS Y PREMIOS -->
+ <!-- REGLAS Y PREMIOS -->
 <section class="mb-12 glass p-8 sm:p-12 rounded-[2.5rem] border border-white/10 relative overflow-hidden">
     <div class="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
         <span class="text-9xl">💰</span>
@@ -132,7 +129,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div>
                 <p class="text-slate-400 text-sm sm:text-base leading-relaxed mb-6">
-                    El 95% del pozo acumulado será repartido entre los mejores participantes al final de la temporada. ¡Cada acierto cuenta para subir en el ranking!
+                    El 95% del pozo acumulado será repartido entre los mejores participantes al finalizar la <b>fase de grupos</b>. ¡Cada acierto cuenta para subir en el ranking!
                 </p>
                 <div class="space-y-4">
                     <div class="flex items-center gap-4 group">
@@ -215,7 +212,7 @@ function showMoreMatches() {
 <!-- RESULTADOS RECIENTES -->
 <section class="mb-4">
     <h2 class="text-xl sm:text-2xl font-black uppercase tracking-tighter italic border-l-4 border-slate-600 pl-4 mb-5">Resultados Finales</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 opacity-60">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 opacity-60">
         @foreach($finishedGames as $game)
             @include('partials.game-card', ['game' => $game])
         @endforeach
