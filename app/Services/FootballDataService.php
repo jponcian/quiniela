@@ -88,7 +88,7 @@ class FootballDataService
     /**
      * Calcula los puntos para todas las predicciones de un partido finalizado.
      */
-    protected function reconcileMatch(Game $game)
+    public function reconcileMatch(Game $game)
     {
         $predictions = \App\Models\Prediction::where('game_id', $game->id)
             ->where('is_calculated', false)
@@ -116,7 +116,7 @@ class FootballDataService
     /**
      * Recalcula los puestos del ranking y notifica a los usuarios por WhatsApp.
      */
-    protected function updateGlobalRanking()
+    public function updateGlobalRanking()
     {
         $users = \App\Models\User::orderBy('points', 'desc')
             ->orderBy('hits_exact', 'desc')
@@ -151,6 +151,14 @@ class FootballDataService
 
             $prevScore = $user->points;
             $prevExacts = $user->hits_exact;
+
+            // Guardar en el historial de tendencias
+            \App\Models\RankHistory::create([
+                'user_id' => $user->id,
+                'rank' => $currentRank,
+                'points' => $user->points,
+                'recorded_at' => now()
+            ]);
         }
 
         // Enviamos notificaciones masivas (Broadcast)

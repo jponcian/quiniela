@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -67,8 +68,12 @@
             <nav class="hidden md:flex gap-6 text-sm font-semibold">
                 <a href="/" class="{{ request()->is('/') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Partidos</a>
                 <a href="{{ route('ranking') }}" class="{{ request()->routeIs('ranking') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Ranking</a>
+                <a href="{{ route('groups.index') }}" class="{{ request()->routeIs('groups.index') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Ligas</a>
                 <a href="{{ route('rules') }}" class="{{ request()->routeIs('rules') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Reglas</a>
                 @auth
+                    @if(Auth::user()->is_admin)
+                        <a href="{{ route('admin.dashboard') }}" class="{{ request()->is('admin*') ? 'text-brand-neon' : 'text-slate-400 hover:text-brand-neon' }} transition border-l border-white/10 pl-4 font-black">ADMIN</a>
+                    @endif
                     <a href="{{ route('predictions.pdf') }}" target="_blank" class="text-slate-400 hover:text-white transition">Mis Predicciones</a>
                 @endauth
             </nav>
@@ -112,6 +117,7 @@
             <div class="px-4 py-4 flex flex-col gap-3">
                 <a href="/" class="{{ request()->is('/') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">⚽ Partidos</a>
                 <a href="{{ route('ranking') }}" class="{{ request()->routeIs('ranking') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">🏆 Ranking</a>
+                <a href="{{ route('groups.index') }}" class="{{ request()->routeIs('groups.index') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">👥 Ligas</a>
                 <a href="{{ route('rules') }}" class="{{ request()->routeIs('rules') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">📜 Reglas</a>
                 @auth
                     <a href="{{ route('predictions.pdf') }}" target="_blank" class="text-slate-400 font-semibold py-2 border-b border-white/5">📋 Mis Predicciones</a>
@@ -173,5 +179,6 @@ document.addEventListener('click', function(e) {
     }
 });
 </script>
+@stack('scripts')
 </body>
 </html>

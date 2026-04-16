@@ -8,20 +8,26 @@
                 🏆 Temporada 2025/26
             </span>
             <h1 class="text-4xl md:text-5xl font-black text-white uppercase italic tracking-tighter leading-none mb-2">
-                Ranking de <span class="text-brand-neon">Participantes</span>
+                Ranking @if($group) de <span class="text-brand-yellow">{{ $group->name }}</span> @else de <span class="text-brand-neon">Participantes</span> @endif
             </h1>
-            <p class="text-slate-400 text-sm font-medium">Liderazgo y estadísticas en tiempo real.</p>
+            <p class="text-slate-400 text-sm font-medium">
+                @if($group) Filipado por liga privada ({{ count($rankedUsers) }} miembros). @else Liderazgo y estadísticas en tiempo real (Global). @endif
+            </p>
         </div>
         
-        <div class="glass p-5 rounded-3xl border border-white/10 flex items-center gap-6">
-            <div class="text-center px-4 border-r border-white/5">
-                <div class="text-2xl font-black text-white leading-none mb-1">{{ count($rankedUsers) }}</div>
-                <div class="text-[9px] text-slate-500 uppercase font-bold tracking-widest">Jugadores</div>
-            </div>
-            <div class="text-center px-4">
-                <div class="text-2xl font-black text-brand-neon leading-none mb-1">95%</div>
-                <div class="text-[9px] text-slate-500 uppercase font-bold tracking-widest">Pozo Premios</div>
-            </div>
+        </div>
+    </div>
+
+    <!-- Trend Chart Container -->
+    <div class="glass rounded-[2rem] border border-white/10 p-6 mb-10 overflow-hidden shadow-2xl relative">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-white font-black text-xs uppercase tracking-widest flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-brand-neon rounded-full animate-pulse"></span>
+                Evolución del Ranking
+            </h2>
+        </div>
+        <div class="h-[250px] w-full">
+            <canvas id="trendChart"></canvas>
         </div>
     </div>
 
@@ -157,3 +163,84 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('trendChart').getContext('2d');
+    
+    // Preparar datos para el gráfico
+    const historyData = @json($history);
+    const datasets = [];
+    const colors = ['#00ff9d', '#10b981', '#facc15', '#38bdf8', '#818cf8'];
+    
+    let labels = [];
+    let i = 0;
+    
+    for (const userId in historyData) {
+        const userHistory = historyData[userId];
+        const userName = userHistory[0].user.name;
+        
+        // Asignar labels (fechas) solo una vez
+        if (labels.length === 0) {
+            labels = userHistory.map(h => h.formatted_date);
+        }
+        
+        datasets.push({
+            label: userName,
+            data: userHistory.map(h => h.rank),
+            borderColor: colors[i % colors.length],
+            backgroundColor: colors[i % colors.length] + '20',
+            borderWidth: 3,
+            tension: 0.4,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            yAxisID: 'y',
+        });
+        i++;
+    }
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    reverse: true, // El rango 1 es mejor que 10
+                    min: 1,
+                    ticks: {
+                        stepSize: 1,
+                        color: '#64748b',
+                        font: { weight: 'bold' }
+                    },
+                    grid: { color: 'rgba(255,255,255,0.05)' }
+                },
+                x: {
+                    ticks: { color: '#64748b', font: { size: 9 } },
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#94a3b8', font: { weight: 'bold', size: 10 }, usePointStyle: true }
+                },
+                tooltip: {
+                    backgroundColor: '#0f172a',
+                    titleFont: { weight: 'bold' },
+                    padding: 12,
+                    cornerRadius: 12,
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    borderWidth: 1
+                }
+            }
+        }
+    });
+});
+</script>
+@endpush

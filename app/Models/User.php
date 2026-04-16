@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'whatsapp',
+        'is_admin',
     ];
 
 
@@ -46,5 +47,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
     }
 }

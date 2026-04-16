@@ -9,12 +9,22 @@ use Illuminate\Support\Facades\Auth;
 
 class RankingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // 1. Obtener todos los usuarios ordenados por puntos (desc) y luego por exactos (desc)
-        $users = User::orderBy('points', 'desc')
-            ->orderBy('hits_exact', 'desc')
-            ->get();
+        $groupId = $request->get('group_id');
+        $group = null;
+
+        $query = User::orderBy('points', 'desc')
+            ->orderBy('hits_exact', 'desc');
+
+        if ($groupId) {
+            $group = \App\Models\Group::findOrFail($groupId);
+            $query->whereHas('groups', function($q) use ($groupId) {
+                $q->where('groups.id', $groupId);
+            });
+        }
+
+        $users = $query->get();
 
         // 2. Calcular estadísticas globales
         $remainingGames = Game::whereNotIn('status', ['finished', 'in_play'])->count();
@@ -70,11 +80,25 @@ class RankingController extends Controller
         $totalPot = $users->count() * 10; // Esto es una referencia
         $prizes = $this->calculatePrizes($rankedUsers);
 
+        // 5. Historial de Tendencias para el Gráfico (Top 5 actual)
+        $top5Ids = collect($rankedUsers)->take(5)->pluck('user.id');
+        $history = \App\Models\RankHistory::with('user')->whereIn('user_id', $top5Ids)
+            ->where('recorded_at', '>=', now()->subDays(7))
+            ->orderBy('recorded_at', 'asc')
+            ->get()
+            ->map(function($h) {
+                $h->formatted_date = $h->recorded_at->translatedFormat('d M, h:i A');
+                return $h;
+            })
+            ->groupBy('user_id');
+
         return view('ranking', [
             'rankedUsers' => $rankedUsers,
             'prizes' => $prizes,
             'totalPot' => $totalPot,
-            'currentUser' => Auth::user()
+            'currentUser' => Auth::user(),
+            'group' => $group,
+            'history' => $history
         ]);
     }
 

@@ -13,12 +13,12 @@
     <div class="flex justify-between items-center text-[8px] font-bold text-slate-500 uppercase tracking-widest mb-3">
         <span>{{ $game->match_date->translatedFormat('d M — h:i A') }}</span>
         @if($game->status == 'in_play')
-            <span class="text-red-500 flex items-center gap-1">
-                <span class="w-1 h-1 bg-red-500 rounded-full animate-pulse"></span>
-                EN VIVO
+            <span class="bg-red-500/10 text-red-500 text-[8px] font-black px-2 py-0.5 rounded-full border border-red-500/20 flex items-center gap-1.5 animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.2)]">
+                <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                LIVE
             </span>
         @else
-            <span class="bg-white/5 px-1.5 py-0.5 rounded-md">{{ $game->group ?? 'Jornada' }}</span>
+            <span class="bg-white/5 px-1.5 py-0.5 rounded-md text-[7px]">{{ $game->group ?? 'Jornada' }}</span>
         @endif
     </div>
     
