@@ -34,9 +34,11 @@ class Game extends Model
             return true;
         }
 
-        // Bloqueo 15 minutos antes
-        // now() ya usa la zona horaria America/Caracas según el .env
-        return now()->addMinutes(15)->greaterThanOrEqualTo($this->match_date);
+        // Forzamos la comparación en la zona horaria de Caracas para evitar errores si el servidor está en UTC
+        $matchDate = \Carbon\Carbon::parse($this->getRawOriginal('match_date'), 'America/Caracas');
+        $now = now('America/Caracas');
+
+        return $now->addMinutes(15)->greaterThanOrEqualTo($matchDate);
     }
 
     public function predictions()
