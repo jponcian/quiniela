@@ -43,7 +43,7 @@
                     {{ $game->isLocked() ? 'readonly' : '' }} 
                     placeholder="0"
                     value="{{ $pred ? $pred->home_score : '' }}"
-                    class="w-9 h-9 glass bg-slate-900/80 rounded-lg text-center text-base font-black border-none focus:ring-2 focus:ring-brand-emerald text-white transition {{ $game->isLocked() ? 'opacity-50 cursor-not-allowed' : 'cursor-not-allowed' }}">
+                    class="w-9 h-9 glass bg-slate-900/80 rounded-lg text-center text-base font-black border-none focus:ring-2 focus:ring-brand-emerald text-white transition {{ $game->isLocked() ? 'opacity-50 cursor-not-allowed' : '' }}">
                 
                 <span class="text-slate-700 font-black text-[10px] italic">VS</span>
                 
@@ -52,7 +52,7 @@
                     {{ $game->isLocked() ? 'readonly' : '' }} 
                     placeholder="0"
                     value="{{ $pred ? $pred->away_score : '' }}"
-                    class="w-9 h-9 glass bg-slate-900/80 rounded-lg text-center text-base font-black border-none focus:ring-2 focus:ring-brand-emerald text-white transition {{ $game->isLocked() ? 'opacity-50 cursor-not-allowed' : 'cursor-not-allowed' }}">
+                    class="w-9 h-9 glass bg-slate-900/80 rounded-lg text-center text-base font-black border-none focus:ring-2 focus:ring-brand-emerald text-white transition {{ $game->isLocked() ? 'opacity-50 cursor-not-allowed' : '' }}">
             </div>
         </div>
 

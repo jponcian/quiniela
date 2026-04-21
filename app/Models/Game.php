@@ -34,9 +34,9 @@ class Game extends Model
             return true;
         }
 
-        // Bloqueo 15 minutos antes (timezone America/Caracas)
-        $lockTime = $this->match_date->subMinutes(15);
-        return now()->setTimezone('America/Caracas')->greaterThanOrEqualTo($lockTime);
+        // Bloqueo 15 minutos antes
+        // now() ya usa la zona horaria America/Caracas según el .env
+        return now()->addMinutes(15)->greaterThanOrEqualTo($this->match_date);
     }
 
     public function predictions()
