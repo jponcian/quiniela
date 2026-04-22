@@ -161,23 +161,9 @@ class FootballDataService
             ]);
         }
 
-        // Enviamos notificaciones masivas (Broadcast)
-        foreach ($reportData as $data) {
-            $user = $data['user'];
-            if (!$user->whatsapp) continue;
-
-            $message = "¡Hola *{$user->name}*! ⚽\n\n"
-                     . "Se ha actualizado el ranking tras el último partido.\n\n"
-                     . "📍 Tu nueva posición: *#{$data['rank']}* {$data['trend']}\n\n"
-                     . "Ver tabla completa:\n" . url('/ranking') . "\n\n"
-                     . "📜 Revisa las reglas aquí:\n" . url('/reglas') . "\n\n"
-                     . "¡Sigue pronosticando y mucha suerte! 🍀";
-
-            try {
-                $this->whatsapp->sendMessage($user->whatsapp, $message);
-            } catch (\Exception $e) {
-                \Log::error("Error enviando WhatsApp a {$user->whatsapp}: " . $e->getMessage());
-            }
+        // Enviamos notificaciones masivas a través de un Job para evitar timeouts
+        if (!empty($reportData)) {
+            \App\Jobs\ProcessRankingNotifications::dispatch($reportData);
         }
     }
 }
