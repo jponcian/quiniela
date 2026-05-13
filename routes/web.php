@@ -11,13 +11,17 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\AdminController;
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/partidos', [\App\Http\Controllers\GameController::class, 'index'])->name('matches.all');
 Route::get('/ranking', [RankingController::class, 'index'])->name('ranking');
 Route::view('/reglas', 'rules')->name('rules');
 
-// Rutas de Predicciones (API)
-Route::post('/api/predictions', [PredictionController::class, 'store'])->middleware('auth');
-Route::get('/mis-pronosticos/pdf', [PredictionPdfController::class, 'download'])->middleware('auth')->name('predictions.pdf');
+// Rutas de Predicciones
+Route::middleware('auth')->group(function () {
+    Route::get('/mis-pronosticos', [PredictionController::class, 'index'])->name('predictions.index');
+    Route::post('/api/predictions', [PredictionController::class, 'store']);
+    Route::get('/mis-pronosticos/pdf', [PredictionPdfController::class, 'download'])->name('predictions.pdf');
+});
 
 // Rutas de Grupos
 Route::middleware('auth')->group(function () {

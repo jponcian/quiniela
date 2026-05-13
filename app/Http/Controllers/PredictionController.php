@@ -43,4 +43,14 @@ class PredictionController extends Controller
             'prediction' => $prediction
         ]);
     }
+    public function index()
+    {
+        $user = Auth::user();
+        $predictions = Prediction::with('game')
+            ->where('user_id', $user->id)
+            ->get()
+            ->sortBy(fn($p) => $p->game->match_date);
+
+        return view('predictions.index', compact('user', 'predictions'));
+    }
 }

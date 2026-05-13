@@ -18,7 +18,7 @@
                 LIVE
             </span>
         @else
-            <span class="bg-white/5 px-1.5 py-0.5 rounded-md text-[7px]">{{ $game->group ?? 'Jornada' }}</span>
+            <span class="bg-white/5 px-2 py-0.5 rounded-md text-[7px] text-brand-emerald/80">{{ str_replace('_', ' ', $game->group ?? 'Jornada') }}</span>
         @endif
     </div>
     
@@ -34,27 +34,33 @@
             @endif
         </div>
         
-        <!-- Predicction Inputs -->
-        <div class="flex items-center justify-center gap-2 py-1.5 border-y border-white/5 bg-white/5 rounded-xl mx-[-8px] px-2">
-             <div class="flex items-center justify-center gap-2">
-                @php $pred = $userPredictions[$game->id] ?? null; @endphp
-                <input type="number" 
-                    id="score_a_{{ $game->id }}"
-                    {{ $game->isLocked() ? 'readonly' : '' }} 
-                    placeholder="0"
-                    value="{{ $pred ? $pred->home_score : '' }}"
-                    class="w-9 h-9 glass bg-slate-900/80 rounded-lg text-center text-base font-black border-none focus:ring-2 focus:ring-brand-emerald text-white transition {{ $game->isLocked() ? 'opacity-50 cursor-not-allowed' : '' }}">
-                
-                <span class="text-slate-700 font-black text-[10px] italic">VS</span>
-                
-                <input type="number" 
-                    id="score_b_{{ $game->id }}"
-                    {{ $game->isLocked() ? 'readonly' : '' }} 
-                    placeholder="0"
-                    value="{{ $pred ? $pred->away_score : '' }}"
-                    class="w-9 h-9 glass bg-slate-900/80 rounded-lg text-center text-base font-black border-none focus:ring-2 focus:ring-brand-emerald text-white transition {{ $game->isLocked() ? 'opacity-50 cursor-not-allowed' : '' }}">
+        @if(!($informative ?? false))
+            <!-- Predicction Inputs -->
+            <div class="flex items-center justify-center gap-2 py-1.5 border-y border-white/5 bg-white/5 rounded-xl mx-[-8px] px-2">
+                 <div class="flex items-center justify-center gap-2">
+                    @php $pred = $userPredictions[$game->id] ?? null; @endphp
+                    <input type="number" 
+                        id="score_a_{{ $game->id }}"
+                        {{ $game->isLocked() ? 'readonly' : '' }} 
+                        placeholder="0"
+                        value="{{ $pred ? $pred->home_score : '' }}"
+                        class="w-9 h-9 glass bg-slate-900/80 rounded-lg text-center text-base font-black border-none focus:ring-2 focus:ring-brand-emerald text-white transition {{ $game->isLocked() ? 'opacity-50 cursor-not-allowed' : '' }}">
+                    
+                    <span class="text-slate-700 font-black text-[10px] italic">VS</span>
+                    
+                    <input type="number" 
+                        id="score_b_{{ $game->id }}"
+                        {{ $game->isLocked() ? 'readonly' : '' }} 
+                        placeholder="0"
+                        value="{{ $pred ? $pred->away_score : '' }}"
+                        class="w-9 h-9 glass bg-slate-900/80 rounded-lg text-center text-base font-black border-none focus:ring-2 focus:ring-brand-emerald text-white transition {{ $game->isLocked() ? 'opacity-50 cursor-not-allowed' : '' }}">
+                </div>
             </div>
-        </div>
+        @else
+            <div class="flex items-center justify-center py-2 border-y border-white/5 bg-white/5 rounded-xl mx-[-8px]">
+                <span class="text-slate-700 font-black text-[10px] italic tracking-[0.3em]">VS</span>
+            </div>
+        @endif
 
         <!-- Away Team -->
         <div class="flex items-center justify-between">
@@ -68,33 +74,35 @@
         </div>
     </div>
 
-    @if(!$game->isLocked())
-        @auth
-            @if($pred ?? null)
-                <div class="flex items-center justify-between mt-4 mb-1 px-1">
-                    <span class="text-[9px] font-black text-brand-emerald/70 uppercase tracking-widest flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                        Pronóstico guardado
-                    </span>
-                </div>
-            @endif
-            <button onclick="savePrediction({{ $game->id }})" id="btn_{{ $game->id }}"
-                class="w-full mt-2 py-3 rounded-xl bg-brand-emerald text-dark font-black text-[10px] uppercase tracking-widest transition-all hover:bg-brand-neon hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-brand-emerald/10">
-                {{ ($pred ?? null) ? 'ACTUALIZAR' : 'GUARDAR' }}
-            </button>
-        @else
-            <a href="{{ url('/registro') }}" 
-                class="w-full mt-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-brand-emerald font-black text-[9px] uppercase text-center border border-white/5 block tracking-widest transition-all italic">
-                REGÍSTRATE
-            </a>
-        @endauth
-    @else
-        <div class="w-full mt-4 py-3 rounded-xl bg-slate-900/50 text-slate-600 font-black text-[9px] uppercase text-center border border-white/5 tracking-widest italic">
-            @if($game->status == 'finished')
-                FINALIZADO
+    @if(!($informative ?? false))
+        @if(!$game->isLocked())
+            @auth
+                @if($pred ?? null)
+                    <div class="flex items-center justify-between mt-4 mb-1 px-1">
+                        <span class="text-[9px] font-black text-brand-emerald/70 uppercase tracking-widest flex items-center gap-1">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                            Pronóstico guardado
+                        </span>
+                    </div>
+                @endif
+                <button onclick="savePrediction({{ $game->id }})" id="btn_{{ $game->id }}"
+                    class="w-full mt-2 py-3 rounded-xl bg-brand-emerald text-dark font-black text-[10px] uppercase tracking-widest transition-all hover:bg-brand-neon hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-brand-emerald/10">
+                    {{ ($pred ?? null) ? 'ACTUALIZAR' : 'GUARDAR' }}
+                </button>
             @else
-                CERRADO
-            @endif
-        </div>
+                <a href="{{ url('/registro') }}" 
+                    class="w-full mt-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-brand-emerald font-black text-[9px] uppercase text-center border border-white/5 block tracking-widest transition-all italic">
+                    REGÍSTRATE
+                </a>
+            @endauth
+        @else
+            <div class="w-full mt-4 py-3 rounded-xl bg-slate-900/50 text-slate-600 font-black text-[9px] uppercase text-center border border-white/5 tracking-widest italic">
+                @if($game->status == 'finished')
+                    FINALIZADO
+                @else
+                    CERRADO
+                @endif
+            </div>
+        @endif
     @endif
 </div>

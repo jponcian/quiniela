@@ -65,8 +65,9 @@ class AdminController extends Controller
     public function syncMatches()
     {
         try {
-            $count = $this->footballService->syncMatches('PD'); // O WC según convenga
-            return back()->with('success', "Sincronización completada. Se procesaron {$count} partidos.");
+            $count = $this->footballService->syncMatches('WC');
+            $this->footballService->updateGlobalRanking();
+            return back()->with('success', "Sincronización completada. Se procesaron {$count} partidos y se actualizó el ranking.");
         } catch (\Exception $e) {
             return back()->with('error', "Error en la sincronización: " . $e->getMessage());
         }

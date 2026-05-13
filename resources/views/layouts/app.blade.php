@@ -59,22 +59,25 @@
 
             <!-- Logo -->
             <a href="/" class="flex items-center gap-1 shrink-0">
-                <span class="text-xl sm:text-2xl font-extrabold uppercase tracking-tighter text-neon">
+                <span class="text-xl sm:text-2xl font-extrabold uppercase tracking-tighter text-neon flex items-center gap-2">
+                    <svg class="w-6 h-6 text-brand-yellow" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l.395.088 1.102.245a2 2 0 011.583 1.96V8.34c0 .96-.566 1.82-1.456 2.188l-.764.313a4 4 0 01-.93.262V13h1a1 1 0 110 2H7a1 1 0 110-2h1v-1.897a4 4 0 01-.93-.262l-.764-.313A2.36 2.36 0 015 8.34V6.616a2 2 0 011.583-1.96l1.102-.245L8 4.323V3a1 1 0 011-1h1z" clip-rule="evenodd"></path>
+                    </svg>
                     Quiniela<span class="text-brand-emerald">2026</span>
                 </span>
             </a>
 
             <!-- Desktop Nav -->
             <nav class="hidden md:flex gap-6 text-sm font-semibold">
-                <a href="/" class="{{ request()->is('/') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Partidos</a>
+                <a href="{{ route('matches.all') }}" class="{{ request()->routeIs('matches.all') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Partidos</a>
                 <a href="{{ route('ranking') }}" class="{{ request()->routeIs('ranking') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Ranking</a>
-                <a href="{{ route('groups.index') }}" class="{{ request()->routeIs('groups.index') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Ligas</a>
+                {{-- <a href="{{ route('groups.index') }}" class="{{ request()->routeIs('groups.index') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Ligas</a> --}}
                 <a href="{{ route('rules') }}" class="{{ request()->routeIs('rules') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Reglas</a>
                 @auth
                     @if(Auth::user()->is_admin)
                         <a href="{{ route('admin.dashboard') }}" class="{{ request()->is('admin*') ? 'text-brand-neon' : 'text-slate-400 hover:text-brand-neon' }} transition border-l border-white/10 pl-4 font-black">ADMIN</a>
                     @endif
-                    <a href="{{ route('predictions.pdf') }}" target="_blank" class="text-slate-400 hover:text-white transition">Mis Predicciones</a>
+                    <a href="{{ route('predictions.index') }}" class="{{ request()->routeIs('predictions.index') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Mis Predicciones</a>
                 @endauth
             </nav>
 
@@ -115,12 +118,12 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden border-t border-white/5">
             <div class="px-4 py-4 flex flex-col gap-3">
-                <a href="/" class="{{ request()->is('/') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">⚽ Partidos</a>
+                <a href="{{ route('matches.all') }}" class="{{ request()->routeIs('matches.all') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">⚽ Partidos</a>
                 <a href="{{ route('ranking') }}" class="{{ request()->routeIs('ranking') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">🏆 Ranking</a>
-                <a href="{{ route('groups.index') }}" class="{{ request()->routeIs('groups.index') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">👥 Ligas</a>
+                {{-- <a href="{{ route('groups.index') }}" class="{{ request()->routeIs('groups.index') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">👥 Ligas</a> --}}
                 <a href="{{ route('rules') }}" class="{{ request()->routeIs('rules') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">📜 Reglas</a>
                 @auth
-                    <a href="{{ route('predictions.pdf') }}" target="_blank" class="text-slate-400 font-semibold py-2 border-b border-white/5">📋 Mis Predicciones</a>
+                    <a href="{{ route('predictions.index') }}" class="{{ request()->routeIs('predictions.index') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">📋 Mis Predicciones</a>
                     <div class="flex items-center justify-between pt-2">
                         <span class="text-xs text-slate-400 font-bold uppercase truncate max-w-[200px]">{{ Auth::user()->name }}</span>
                         <form action="{{ route('logout') }}" method="POST">

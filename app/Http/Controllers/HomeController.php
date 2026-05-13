@@ -11,34 +11,26 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $allGames = Game::orderBy('match_date', 'asc')->get();
-        
         $now = now()->setTimezone('America/Caracas');
-
-        $liveGames = $allGames->where('status', 'in_play');
         
-        $todayGames = $allGames->where('status', '!=', 'finished')
-                               ->where('status', '!=', 'in_play')
-                               ->filter(function($game) use ($now) {
-                                   return $game->match_date->isToday();
-                               });
+        $liveGames = Game::where('status', 'in_play')->get();
+        
+        $todayGames = Game::where('status', '!=', 'finished')
+                           ->where('status', '!=', 'in_play')
+                           ->whereDate('match_date', $now->toDateString())
+                           ->orderBy('match_date', 'asc')
+                           ->get();
 
-        $upcomingGames = $allGames->where('status', '!=', 'finished')
-                                  ->where('status', '!=', 'in_play')
-                                  ->filter(function($game) use ($now) {
-                                      return $game->match_date->isAfter($now) && !$game->match_date->isToday();
-                                  });
+        $nextGames = Game::where('status', '!=', 'finished')
+                         ->where('status', '!=', 'in_play')
+                         ->where('match_date', '>', $now)
+                         ->whereDate('match_date', '!=', $now->toDateString())
+                         ->orderBy('match_date', 'asc')
+                         ->take(6)
+                         ->get();
 
-        $finishedGames = $allGames->where('status', 'finished')->take(10);
+        $finishedGames = Game::where('status', 'finished')->orderBy('match_date', 'desc')->take(10)->get();
 
-        // Cargar predicciones del usuario autenticado, indexadas por game_id
-        $userPredictions = collect();
-        if (Auth::check()) {
-            $userPredictions = Prediction::where('user_id', Auth::id())
-                ->get()
-                ->keyBy('game_id');
-        }
-
-        return view('welcome', compact('liveGames', 'todayGames', 'upcomingGames', 'finishedGames', 'userPredictions'));
+        return view('welcome', compact('liveGames', 'todayGames', 'nextGames', 'finishedGames'));
     }
 }

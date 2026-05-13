@@ -22,13 +22,15 @@ class FootballDataService
     {
         $response = Http::withoutVerifying()->withHeaders([
             'X-Auth-Token' => $this->key
-        ])->get("{$this->url}/competitions/{$competition}/matches");
+        ])->get("{$this->url}/competitions/{$competition}/matches", [
+            'season' => 2026
+        ]);
 
         if ($response->successful()) {
             $matches = $response->json()['matches'];
 
-            // Equipos de interés (Opcional: puedes quitar este filtro si quieres traer todos)
-            $allowedTeams = ['FC Barcelona', 'Real Madrid CF'];
+            // Sincronizar todos los equipos
+            //$allowedTeams = ['FC Barcelona', 'Real Madrid CF'];
 
             // Ordenar por fecha para procesar cronológicamente
             usort($matches, fn($a, $b) => strcmp($a['utcDate'], $b['utcDate']));
@@ -40,25 +42,32 @@ class FootballDataService
                 $teamB = $match['awayTeam']['name'];
                 $status = strtoupper($match['status']);
 
-                // Filtrar por equipos (Opcional, según tu lógica de La Liga)
+                // Solo fase de grupos
+                if (empty($match['group'])) {
+                    continue;
+                }
+
+                // Sin filtro para el mundial
+                /*
                 $involvesAllowed = in_array($teamA, $allowedTeams) || in_array($teamB, $allowedTeams);
                 if (!$involvesAllowed) {
                     continue;
                 }
+                */
 
                 // Guardar el partido
                 $game = Game::updateOrCreate(
                     ['api_id' => $match['id']],
                     [
-                        'team_a'      => $teamA,
-                        'team_b'      => $teamB,
-                        'flag_a'      => $match['homeTeam']['crest'],
-                        'flag_b'      => $match['awayTeam']['crest'],
+                        'team_a'      => $teamA ?? 'TBD',
+                        'team_b'      => $teamB ?? 'TBD',
+                        'flag_a'      => $match['homeTeam']['crest'] ?? null,
+                        'flag_b'      => $match['awayTeam']['crest'] ?? null,
                         'score_a'     => $match['score']['fullTime']['home'],
                         'score_b'     => $match['score']['fullTime']['away'],
                         'match_date'  => Carbon::parse($match['utcDate'])->setTimezone('America/Caracas'),
-                        'group'       => $match['group'] ?? 'League',
-                        'round'       => $match['matchday'],
+                        'group'       => $match['group'] ?? $match['stage'] ?? 'Mundial',
+                        'round'       => $match['matchday'] ?? 1,
                         'status'      => strtolower($status),
                         'venue'       => $match['venue'] ?? null,
                     ]
@@ -71,9 +80,9 @@ class FootballDataService
                     $this->reconcileMatch($game);
                 }
 
-                // Detener DESPUÉS de guardar el Clásico
-                $isClasico = in_array($teamA, $allowedTeams) && in_array($teamB, $allowedTeams);
-                if ($isClasico) break;
+                // Ya no necesitamos detenernos en el Clásico
+                //$isClasico = in_array($teamA, $allowedTeams) && in_array($teamB, $allowedTeams);
+                //if ($isClasico) break;
             }
 
             // Después de sincronizar todo, refrescar posiciones del ranking

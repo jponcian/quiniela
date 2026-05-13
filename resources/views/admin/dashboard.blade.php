@@ -45,32 +45,8 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Quick Actions -->
-        <div class="lg:col-span-1 flex flex-col gap-4">
-            <h3 class="text-white font-black text-xs uppercase tracking-widest px-2 mb-2">Accesos Rápidos</h3>
-            
-            <a href="{{ route('admin.matches.index') }}" class="glass p-5 rounded-3xl border border-white/5 hover:border-brand-neon/30 transition-all group flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl group-hover:scale-110 transition">⚽</div>
-                    <div>
-                        <div class="text-white font-bold group-hover:text-brand-neon transition">Gestionar Juegos</div>
-                        <div class="text-[10px] text-slate-500 uppercase font-black">Marcadores y Estados</div>
-                    </div>
-                </div>
-                <svg class="w-5 h-5 text-slate-600 group-hover:text-brand-neon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </a>
-
-            <div class="glass p-5 rounded-3xl border border-white/5 opacity-50 cursor-not-allowed flex items-center gap-4">
-                <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl text-slate-500">🏆</div>
-                <div>
-                    <div class="text-slate-400 font-bold">Ligas Privadas</div>
-                    <div class="text-[10px] text-slate-600 uppercase font-black">Próximamente</div>
-                </div>
-            </div>
-        </div>
-
         <!-- Recent Activity / Matches -->
-        <div class="lg:col-span-2">
+        <div class="lg:col-span-3">
             <div class="flex items-center justify-between mb-4 px-2">
                 <h3 class="text-white font-black text-xs uppercase tracking-widest">Partidos Recientes</h3>
                 <a href="{{ route('admin.matches.index') }}" class="text-brand-emerald text-[10px] font-black uppercase tracking-widest hover:underline">Ver todos</a>
