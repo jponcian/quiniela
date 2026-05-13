@@ -7,7 +7,8 @@
     <meta name="theme-color" content="#020617">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>@yield('title', 'Quiniela Mundialista 2026')</title>
+    <title>@yield('title', 'Quiniela Mundial 2026')</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -59,10 +60,7 @@
 
             <!-- Logo -->
             <a href="/" class="flex items-center gap-1 shrink-0">
-                <span class="text-xl sm:text-2xl font-extrabold uppercase tracking-tighter text-neon flex items-center gap-2">
-                    <svg class="w-6 h-6 text-brand-yellow" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l.395.088 1.102.245a2 2 0 011.583 1.96V8.34c0 .96-.566 1.82-1.456 2.188l-.764.313a4 4 0 01-.93.262V13h1a1 1 0 110 2H7a1 1 0 110-2h1v-1.897a4 4 0 01-.93-.262l-.764-.313A2.36 2.36 0 015 8.34V6.616a2 2 0 011.583-1.96l1.102-.245L8 4.323V3a1 1 0 011-1h1z" clip-rule="evenodd"></path>
-                    </svg>
+                <span class="text-xl sm:text-2xl font-extrabold uppercase tracking-tighter text-neon">
                     Quiniela<span class="text-brand-emerald">2026</span>
                 </span>
             </a>

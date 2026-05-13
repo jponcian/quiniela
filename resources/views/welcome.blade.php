@@ -7,11 +7,6 @@
     <img src="{{ asset('images/stadium.png') }}" class="absolute inset-0 w-full h-full object-cover transition duration-1000 group-hover:scale-105" alt="Estadio">
     <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
     <div class="relative h-full flex flex-col items-center justify-center text-center px-5">
-        <!-- Floating Assets -->
-        <div class="absolute -top-10 -right-20 sm:-right-10 w-64 h-64 opacity-20 sm:opacity-40 pointer-events-none animate-pulse">
-            <img src="{{ asset('images/assets/wc_assets.png') }}" class="w-full h-full object-contain rotate-12" alt="WC Trophy & Ball">
-        </div>
-
         <span class="inline-block px-4 py-1.5 rounded-full bg-brand-emerald text-dark text-[10px] font-black uppercase tracking-widest mb-4 sm:mb-6 animate-pulse">⚽ Mundial 2026</span>
         <h1 class="text-4xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter uppercase italic leading-[0.9] mb-3 sm:mb-4">
             Demuestra que <br> <span class="text-brand-neon">sabes de fútbol</span>
