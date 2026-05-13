@@ -203,6 +203,58 @@ const Toast = Swal.mixin({
         confirmButtonColor: '#10b981'
     });
 @endif
+
+async function savePrediction(gameId) {
+    const scoreAInput = document.getElementById('score_a_' + gameId);
+    const scoreBInput = document.getElementById('score_b_' + gameId);
+    const btn = document.getElementById('btn_' + gameId);
+
+    if(!scoreAInput || !scoreBInput || !btn) return;
+
+    const scoreA = scoreAInput.value;
+    const scoreB = scoreBInput.value;
+
+    if(scoreA === '' || scoreB === '') {
+        Toast.fire({ icon: 'warning', title: 'Ingresa ambos marcadores.' });
+        return;
+    }
+
+    btn.disabled = true;
+    const originalText = btn.textContent;
+    btn.textContent = '...';
+
+    try {
+        const response = await fetch('{{ url("/api/predictions") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ game_id: gameId, score_a: scoreA, score_b: scoreB })
+        });
+
+        const data = await response.json();
+
+        if(response.ok) {
+            btn.textContent = '✓';
+            btn.classList.add('bg-brand-neon');
+            Toast.fire({ icon: 'success', title: '¡Pronóstico guardado!' });
+            setTimeout(() => {
+                btn.textContent = 'ACTUALIZAR';
+                btn.classList.remove('bg-brand-neon');
+                btn.disabled = false;
+            }, 2000);
+        } else {
+            Toast.fire({ icon: 'error', title: data.message || 'Error al guardar.' });
+            btn.disabled = false;
+            btn.textContent = originalText;
+        }
+    } catch (error) {
+        Toast.fire({ icon: 'error', title: 'Error de conexión.' });
+        btn.disabled = false;
+        btn.textContent = originalText;
+    }
+}
 </script>
 @stack('scripts')
 </body>

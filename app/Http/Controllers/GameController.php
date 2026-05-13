@@ -17,7 +17,7 @@ class GameController extends Controller
         $upcomingGames = $allGames->where('status', '!=', 'finished')->where('status', '!=', 'in_play');
         $finishedGames = $allGames->where('status', 'finished');
 
-        $viewType = request()->query('view', 'group');
+        $viewType = request()->query('view', 'date');
 
         if ($viewType === 'date') {
             $groupedGames = $upcomingGames->groupBy(function($game) {
