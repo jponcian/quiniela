@@ -17,7 +17,17 @@ class GameController extends Controller
         $upcomingGames = $allGames->where('status', '!=', 'finished')->where('status', '!=', 'in_play');
         $finishedGames = $allGames->where('status', 'finished');
 
-        $groupedGames = $upcomingGames->groupBy('group')->sortKeys();
+        $viewType = request()->query('view', 'group');
+
+        if ($viewType === 'date') {
+            $groupedGames = $upcomingGames->groupBy(function($game) {
+                return \Carbon\Carbon::parse($game->match_date)->format('Y-m-d');
+            })->sortKeys();
+        } else {
+            $groupedGames = $upcomingGames->groupBy('group')->sortKeys();
+        }
+
+        $viewType = $viewType; // Para pasarlo a la vista
 
         // Cargar predicciones del usuario autenticado
         $userPredictions = collect();
@@ -27,6 +37,6 @@ class GameController extends Controller
                 ->keyBy('game_id');
         }
 
-        return view('games.index', compact('liveGames', 'groupedGames', 'finishedGames', 'userPredictions'));
+        return view('games.index', compact('liveGames', 'groupedGames', 'finishedGames', 'userPredictions', 'viewType'));
     }
 }

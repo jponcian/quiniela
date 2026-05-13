@@ -53,4 +53,24 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function getTotalPaidAttribute()
+    {
+        return $this->payments()->sum('amount');
+    }
+
+    public function getBalanceAttribute()
+    {
+        return 10 - $this->total_paid;
+    }
+
+    public function getIsFullyPaidAttribute()
+    {
+        return $this->total_paid >= 10;
+    }
 }

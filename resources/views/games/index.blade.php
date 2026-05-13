@@ -3,11 +3,25 @@
 @section('title', 'Partidos — Quiniela 2026')
 
 @section('content')
-<div class="mb-10">
-    <h1 class="text-3xl sm:text-5xl font-black text-white uppercase tracking-tighter italic mb-4">
-        Carga tus <span class="text-brand-neon">Pronósticos</span>
-    </h1>
-    <p class="text-slate-400 font-medium">Aquí puedes ver todos los partidos de la fase de grupos y guardar tus resultados.</p>
+<div class="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+    <div>
+        <h1 class="text-3xl sm:text-5xl font-black text-white uppercase tracking-tighter italic mb-4">
+            Carga tus <span class="text-brand-neon">Pronósticos</span>
+        </h1>
+        <p class="text-slate-400 font-medium">Aquí puedes ver todos los partidos de la fase de grupos y guardar tus resultados.</p>
+    </div>
+    
+    <!-- Selector de Vistas -->
+    <div class="flex items-center gap-2 bg-slate-900/50 p-1.5 rounded-2xl border border-white/5 backdrop-blur-md">
+        <a href="{{ route('matches.all', ['view' => 'group']) }}" 
+           class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all {{ $viewType === 'group' ? 'bg-brand-emerald text-brand-dark shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+            Por Grupo
+        </a>
+        <a href="{{ route('matches.all', ['view' => 'date']) }}" 
+           class="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all {{ $viewType === 'date' ? 'bg-brand-emerald text-brand-dark shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+            Por Día
+        </a>
+    </div>
 </div>
 
 <!-- PARTIDOS EN VIVO -->
@@ -33,7 +47,11 @@
     <section class="mb-16 last:mb-0">
         <div class="flex items-center gap-4 mb-8">
             <h2 class="text-xl sm:text-2xl font-black uppercase tracking-tighter italic border-l-4 border-brand-yellow pl-4">
-                {{ str_replace('_', ' ', $groupName) }}
+                @if($viewType === 'date')
+                    {{ \Carbon\Carbon::parse($groupName)->translatedFormat('l, d \d\e F') }}
+                @else
+                    {{ str_replace('_', ' ', $groupName) }}
+                @endif
             </h2>
             <div class="h-px bg-white/5 flex-1"></div>
         </div>

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -59,7 +60,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 
             <!-- Logo -->
-            <a href="/" class="flex items-center gap-1 shrink-0">
+            <a href="/" class="flex items-center gap-2 shrink-0">
+                <img src="{{ asset('images/trophy.png') }}" alt="Copa del Mundo" class="w-8 h-8 sm:w-10 sm:h-10 object-contain drop-shadow-[0_0_8px_rgba(250,204,21,0.4)]">
                 <span class="text-xl sm:text-2xl font-extrabold uppercase tracking-tighter text-neon">
                     Quiniela<span class="text-brand-emerald">2026</span>
                 </span>
@@ -73,7 +75,8 @@
                 <a href="{{ route('rules') }}" class="{{ request()->routeIs('rules') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Reglas</a>
                 @auth
                     @if(Auth::user()->is_admin)
-                        <a href="{{ route('admin.dashboard') }}" class="{{ request()->is('admin*') ? 'text-brand-neon' : 'text-slate-400 hover:text-brand-neon' }} transition border-l border-white/10 pl-4 font-black">ADMIN</a>
+                        <a href="{{ route('admin.dashboard') }}" class="{{ request()->is('admin') ? 'text-brand-neon' : 'text-slate-400 hover:text-brand-neon' }} transition border-l border-white/10 pl-4 font-black text-[10px]">ADMIN</a>
+                        <a href="{{ route('admin.payments.index') }}" class="{{ request()->is('admin/payments*') ? 'text-brand-neon' : 'text-slate-400 hover:text-brand-neon' }} transition font-black text-[10px]">PAGOS</a>
                     @endif
                     <a href="{{ route('predictions.index') }}" class="{{ request()->routeIs('predictions.index') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Mis Predicciones</a>
                 @endauth
@@ -121,6 +124,9 @@
                 {{-- <a href="{{ route('groups.index') }}" class="{{ request()->routeIs('groups.index') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">👥 Ligas</a> --}}
                 <a href="{{ route('rules') }}" class="{{ request()->routeIs('rules') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">📜 Reglas</a>
                 @auth
+                    @if(Auth::user()->is_admin)
+                        <a href="{{ route('admin.payments.index') }}" class="{{ request()->is('admin/payments*') ? 'text-brand-neon border-brand-neon' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">💰 Gestión de Pagos</a>
+                    @endif
                     <a href="{{ route('predictions.index') }}" class="{{ request()->routeIs('predictions.index') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">📋 Mis Predicciones</a>
                     <div class="flex items-center justify-between pt-2">
                         <span class="text-xs text-slate-400 font-bold uppercase truncate max-w-[200px]">{{ Auth::user()->name }}</span>
@@ -142,18 +148,6 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-6 sm:py-8">
-        @if (session('success'))
-            <div class="mb-6 p-4 bg-brand-emerald/10 border border-brand-emerald/20 rounded-2xl text-brand-emerald text-sm text-center font-bold">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-500 text-sm text-center font-bold">
-                {{ session('error') }}
-            </div>
-        @endif
-
         @yield('content')
     </main>
 
@@ -179,6 +173,36 @@ document.addEventListener('click', function(e) {
         toggleMenu();
     }
 });
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
+
+@if(session('success'))
+    Toast.fire({
+        icon: 'success',
+        title: "{{ session('success') }}"
+    });
+@endif
+
+@if(session('error'))
+    Swal.fire({
+        icon: 'error',
+        title: '¡Atención!',
+        text: "{{ session('error') }}",
+        background: '#020617',
+        color: '#fff',
+        confirmButtonColor: '#10b981'
+    });
+@endif
 </script>
 @stack('scripts')
 </body>

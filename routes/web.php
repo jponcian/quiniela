@@ -10,6 +10,7 @@ use App\Http\Controllers\PredictionPdfController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\PaymentController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/partidos', [\App\Http\Controllers\GameController::class, 'index'])->name('matches.all');
@@ -48,4 +49,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/matches', [AdminController::class, 'matches'])->name('matches.index');
     Route::post('/matches/{game}', [AdminController::class, 'updateMatch'])->name('matches.update');
     Route::post('/sync-matches', [AdminController::class, 'syncMatches'])->name('sync');
+
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
+    Route::delete('/payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
 });

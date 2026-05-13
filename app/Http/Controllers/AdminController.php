@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Game;
 use App\Models\User;
+use App\Models\Payment;
 use App\Services\FootballDataService;
 
 class AdminController extends Controller
@@ -22,8 +23,9 @@ class AdminController extends Controller
         $totalGames = Game::count();
         $finishedGames = Game::where('status', 'finished')->count();
         $recentGames = Game::orderBy('match_date', 'desc')->take(5)->get();
+        $totalCollected = Payment::sum('amount');
 
-        return view('admin.dashboard', compact('totalUsers', 'totalGames', 'finishedGames', 'recentGames'));
+        return view('admin.dashboard', compact('totalUsers', 'totalGames', 'finishedGames', 'recentGames', 'totalCollected'));
     }
 
     public function matches(Request $request)
