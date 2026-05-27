@@ -55,6 +55,14 @@ class PaymentController extends Controller
 
         Payment::create($request->all());
 
+        // Actualizar la preferencia de jugar quiniela del usuario
+        $user = User::find($request->user_id);
+        if ($user) {
+            $user->update([
+                'plays_quiniela' => $request->has('plays_quiniela')
+            ]);
+        }
+
         return back()->with('success', '¡Pago registrado exitosamente!');
     }
 

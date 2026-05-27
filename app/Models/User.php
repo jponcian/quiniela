@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'whatsapp',
         'is_admin',
+        'plays_quiniela',
     ];
 
 
@@ -46,6 +47,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'plays_quiniela' => 'boolean',
         ];
     }
 
@@ -76,14 +78,14 @@ class User extends Authenticatable
 
     public function getBalanceAttribute()
     {
-        $baseInscription = $this->predictions()->count() > 0 ? 10 : 0;
+        $baseInscription = $this->plays_quiniela ? 10 : 0;
         $cost = $baseInscription + ($this->championBets()->count() * 5);
         return $cost - $this->total_paid;
     }
 
     public function getIsFullyPaidAttribute()
     {
-        $baseInscription = $this->predictions()->count() > 0 ? 10 : 0;
+        $baseInscription = $this->plays_quiniela ? 10 : 0;
         $cost = $baseInscription + ($this->championBets()->count() * 5);
         return $this->total_paid >= $cost;
     }

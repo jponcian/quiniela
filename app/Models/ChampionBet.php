@@ -27,7 +27,7 @@ class ChampionBet extends Model
         $bets = $user->championBets->sortBy('id')->values();
 
         // Inscripción base dinámica
-        $baseInscription = $user->predictions()->count() > 0 ? 10 : 0;
+        $baseInscription = $user->plays_quiniela ? 10 : 0;
 
         foreach ($bets as $index => $bet) {
             if ($bet->id === $this->id) {

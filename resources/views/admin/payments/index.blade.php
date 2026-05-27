@@ -27,12 +27,22 @@
                     @csrf
                     <div>
                         <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">Participante</label>
-                        <select name="user_id" required class="w-full bg-slate-900 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-emerald transition appearance-none">
+                        <select name="user_id" id="user_select" required class="w-full bg-slate-900 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-emerald transition appearance-none">
                             <option value="">Seleccionar usuario...</option>
                             @foreach($pendingUsers as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->cedula }}) - Debe ${{ number_format($user->balance, 2) }}</option>
+                                <option value="{{ $user->id }}" data-plays-quiniela="{{ $user->plays_quiniela ? '1' : '0' }}">{{ $user->name }} ({{ $user->cedula }}) - Debe ${{ number_format($user->balance, 2) }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="flex items-center gap-3 bg-slate-900/50 border border-white/10 rounded-2xl p-4">
+                        <input type="checkbox" name="plays_quiniela" id="plays_quiniela" value="1" checked class="w-5 h-5 rounded border-white/10 text-brand-emerald focus:ring-brand-emerald focus:ring-offset-slate-950 bg-slate-900 accent-brand-emerald cursor-pointer">
+                        <div class="flex flex-col">
+                            <label for="plays_quiniela" class="text-xs font-black text-white uppercase tracking-wider cursor-pointer select-none">
+                                Juega Quiniela
+                            </label>
+                            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Inscripción Base ($10.00)</span>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -200,6 +210,19 @@
 
 @push('scripts')
 <script>
+document.getElementById('user_select').addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const playsQuinielaCheckbox = document.getElementById('plays_quiniela');
+    
+    if (selectedOption && selectedOption.value !== "") {
+        const playsQuiniela = selectedOption.getAttribute('data-plays-quiniela') === '1';
+        playsQuinielaCheckbox.checked = playsQuiniela;
+    } else {
+        // Default to checked if no user is selected
+        playsQuinielaCheckbox.checked = true;
+    }
+});
+
 function confirmDelete(button) {
     Swal.fire({
         title: '¿Estás seguro?',
