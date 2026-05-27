@@ -138,6 +138,60 @@
                             @endforeach
                         </tbody>
                     </table>
+            <!-- Detalle de Apuestas al Campeón -->
+            <div class="flex items-center justify-between mb-4 mt-8 px-2">
+                <h3 class="text-white font-black text-xs uppercase tracking-widest">Apuestas al Campeón Registradas</h3>
+                <span class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Costo por apuesta: $5.00</span>
+            </div>
+
+            <div class="glass rounded-[2.5rem] border border-white/10 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900/50">
+                                <th class="px-6 py-5 text-[9px] font-black text-slate-500 uppercase tracking-widest">Participante</th>
+                                <th class="px-6 py-5 text-[9px] font-black text-slate-500 uppercase tracking-widest">Selección</th>
+                                <th class="px-6 py-5 text-[9px] font-black text-slate-500 uppercase tracking-widest text-center">Estado Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5">
+                            @forelse($bets as $bet)
+                            <tr class="hover:bg-white/[0.02] transition-colors align-middle">
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-bold text-white">{{ $bet->user->name }}</span>
+                                        <span class="text-[10px] text-slate-500 font-medium">CI: {{ $bet->user->cedula }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        @if(isset($flags[$bet->team_name]))
+                                            <img src="{{ $flags[$bet->team_name] }}" alt="{{ $bet->team_name }}" class="w-6 h-4 object-cover rounded shadow border border-white/10">
+                                        @endif
+                                        <span class="text-sm font-bold text-white">{{ $bet->team_name }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    @if($bet->is_confirmed)
+                                        <span class="px-3 py-1 rounded-full bg-brand-emerald/10 text-brand-emerald text-[9px] font-black uppercase tracking-widest border border-brand-emerald/20">
+                                            Confirmado
+                                        </span>
+                                    @else
+                                        <span class="px-3 py-1 rounded-full bg-brand-yellow/10 text-brand-yellow text-[9px] font-black uppercase tracking-widest border border-brand-yellow/20">
+                                            Pendiente ($5.00)
+                                        </span>
+                                    @endif
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="3" class="text-center py-8 text-slate-500 text-sm italic">
+                                    No hay apuestas de campeón registradas aún.
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

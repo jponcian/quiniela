@@ -59,6 +59,11 @@ class User extends Authenticatable
         return $this->hasMany(Payment::class);
     }
 
+    public function championBets()
+    {
+        return $this->hasMany(ChampionBet::class);
+    }
+
     public function getTotalPaidAttribute()
     {
         return $this->payments()->sum('amount');
@@ -66,11 +71,13 @@ class User extends Authenticatable
 
     public function getBalanceAttribute()
     {
-        return 10 - $this->total_paid;
+        $cost = 10 + ($this->championBets()->count() * 5);
+        return $cost - $this->total_paid;
     }
 
     public function getIsFullyPaidAttribute()
     {
-        return $this->total_paid >= 10;
+        $cost = 10 + ($this->championBets()->count() * 5);
+        return $this->total_paid >= $cost;
     }
 }

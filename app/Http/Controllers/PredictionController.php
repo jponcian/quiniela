@@ -22,7 +22,7 @@ class PredictionController extends Controller
 
         if ($game->isLocked()) {
             return response()->json([
-                'message' => 'El tiempo para pronosticar este partido ha expirado (15 min antes).'
+                'message' => 'La quiniela está cerrada (las predicciones se bloquean 1 hora antes del primer partido del mundial).'
             ], 403);
         }
 

@@ -11,7 +11,7 @@ class PaymentController extends Controller
 {
     public function index()
     {
-        $allUsers = User::with('payments')->get();
+        $allUsers = User::with(['payments', 'championBets'])->get();
         
         // Usuarios que aún deben dinero para el select
         $pendingUsers = $allUsers->filter(function($user) {
@@ -21,7 +21,18 @@ class PaymentController extends Controller
         // Todos los usuarios para la tabla, ordenados por total pagado
         $users = $allUsers->sortByDesc('total_paid');
 
-        return view('admin.payments.index', compact('users', 'pendingUsers'));
+        // Cargar apuestas de campeón y banderas para unificar pantallas
+        $bets = \App\Models\ChampionBet::with('user')->orderBy('created_at', 'desc')->get();
+        
+        $flags = \App\Models\Game::select('team_a as name', 'flag_a as flag')
+            ->union(\App\Models\Game::select('team_b as name', 'flag_b as flag'))
+            ->distinct()
+            ->get()
+            ->filter(fn($c) => $c->name && $c->name !== 'TBD')
+            ->pluck('flag', 'name')
+            ->toArray();
+
+        return view('admin.payments.index', compact('users', 'pendingUsers', 'bets', 'flags'));
     }
 
     public function store(Request $request)

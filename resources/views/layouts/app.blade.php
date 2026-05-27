@@ -79,6 +79,7 @@
                         <a href="{{ route('admin.payments.index') }}" class="{{ request()->is('admin/payments*') ? 'text-brand-neon' : 'text-slate-400 hover:text-brand-neon' }} transition font-black text-[10px]">PAGOS</a>
                     @endif
                     <a href="{{ route('predictions.index') }}" class="{{ request()->routeIs('predictions.index') ? 'text-white' : 'text-slate-400 hover:text-white' }} transition">Mis Predicciones</a>
+                    <a href="{{ route('champion.bets.index') }}" class="{{ request()->routeIs('champion.bets.index') ? 'text-brand-yellow font-bold' : 'text-slate-400 hover:text-brand-yellow' }} transition">🏆 Apuesta Campeón</a>
                 @endauth
             </nav>
 
@@ -128,6 +129,7 @@
                         <a href="{{ route('admin.payments.index') }}" class="{{ request()->is('admin/payments*') ? 'text-brand-neon border-brand-neon' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">💰 Gestión de Pagos</a>
                     @endif
                     <a href="{{ route('predictions.index') }}" class="{{ request()->routeIs('predictions.index') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">📋 Mis Predicciones</a>
+                    <a href="{{ route('champion.bets.index') }}" class="{{ request()->routeIs('champion.bets.index') ? 'text-white border-brand-emerald' : 'text-slate-400 border-white/5' }} font-semibold py-2 border-b">🏆 Apuesta Campeón</a>
                     <div class="flex items-center justify-between pt-2">
                         <span class="text-xs text-slate-400 font-bold uppercase truncate max-w-[200px]">{{ Auth::user()->name }}</span>
                         <form action="{{ route('logout') }}" method="POST">

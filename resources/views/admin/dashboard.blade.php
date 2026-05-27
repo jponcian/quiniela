@@ -13,7 +13,7 @@
             <p class="text-slate-400 text-sm font-medium">Gestión global de la plataforma Quiniela 2026.</p>
         </div>
         
-        <div class="flex gap-3">
+        <div class="flex flex-wrap gap-3">
              <form action="{{ route('admin.sync') }}" method="POST">
                 @csrf
                 <button type="submit" class="bg-brand-emerald hover:bg-brand-neon text-brand-dark px-6 py-3 rounded-2xl text-sm font-black transition-all shadow-lg flex items-center gap-2">
@@ -25,6 +25,18 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 PAGOS
             </a>
+            <form action="{{ route('admin.seal_quiniela') }}" method="POST">
+                @csrf
+                <button type="submit" class="{{ $quinielaSealed ? 'bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20' : 'bg-brand-yellow hover:bg-yellow-400 text-brand-dark' }} px-6 py-3 rounded-2xl text-sm font-black transition-all shadow-lg flex items-center gap-2">
+                    {{ $quinielaSealed ? '🔓 ABRIR QUINIELA' : '🔒 SELLAR QUINIELA' }}
+                </button>
+            </form>
+            <form action="{{ route('admin.seal_champion') }}" method="POST">
+                @csrf
+                <button type="submit" class="{{ $championSealed ? 'bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20' : 'bg-brand-yellow hover:bg-yellow-400 text-brand-dark' }} px-6 py-3 rounded-2xl text-sm font-black transition-all shadow-lg flex items-center gap-2">
+                    {{ $championSealed ? '🔓 ABRIR CAMPEÓN' : '🔒 SELLAR CAMPEÓN' }}
+                </button>
+            </form>
         </div>
     </div>
 
@@ -50,7 +62,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Recent Activity / Matches -->
-        <div class="lg:col-span-3">
+        <div class="lg:col-span-2">
             <div class="flex items-center justify-between mb-4 px-2">
                 <h3 class="text-white font-black text-xs uppercase tracking-widest">Partidos Recientes</h3>
                 <a href="{{ route('admin.matches.index') }}" class="text-brand-emerald text-[10px] font-black uppercase tracking-widest hover:underline">Ver todos</a>
@@ -87,6 +99,40 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Definir Campeón Oficial -->
+        <div class="lg:col-span-1">
+            <div class="flex items-center justify-between mb-4 px-2">
+                <h3 class="text-white font-black text-xs uppercase tracking-widest">Campeón del Mundial</h3>
+            </div>
+
+            <div class="glass p-8 rounded-[2rem] border border-white/10">
+                <form action="{{ route('admin.set_champion') }}" method="POST" class="space-y-5">
+                    @csrf
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">Selección Campeona</label>
+                        <select name="champion" class="w-full bg-slate-900 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-emerald transition appearance-none">
+                            <option value="">-- Sin Campeón (Remover) --</option>
+                            @foreach($countries as $country)
+                                <option value="{{ $country }}" {{ $championTeam === $country ? 'selected' : '' }}>
+                                    {{ $country }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    @if($championTeam)
+                        <div class="bg-brand-emerald/10 border border-brand-emerald/20 text-brand-emerald p-4 rounded-xl text-xs font-semibold">
+                            🏆 Campeón Establecido: {{ $championTeam }}
+                        </div>
+                    @endif
+
+                    <button type="submit" class="w-full bg-brand-yellow hover:bg-white text-brand-dark font-black py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2 uppercase text-xs tracking-widest">
+                        Definir Campeón
+                    </button>
+                </form>
             </div>
         </div>
     </div>

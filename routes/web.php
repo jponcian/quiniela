@@ -24,6 +24,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/mis-pronosticos/pdf', [PredictionPdfController::class, 'download'])->name('predictions.pdf');
 });
 
+// Rutas de Apuestas al Campeón
+Route::middleware('auth')->group(function () {
+    Route::get('/apuesta-campeon', [\App\Http\Controllers\ChampionBetController::class, 'index'])->name('champion.bets.index');
+    Route::post('/apuesta-campeon', [\App\Http\Controllers\ChampionBetController::class, 'store'])->name('champion.bets.store');
+    Route::delete('/apuesta-campeon/{championBet}', [\App\Http\Controllers\ChampionBetController::class, 'destroy'])->name('champion.bets.destroy');
+});
+
 // Rutas de Grupos
 Route::middleware('auth')->group(function () {
     Route::get('/grupos', [GroupController::class, 'index'])->name('groups.index');
@@ -53,4 +60,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
     Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
     Route::delete('/payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
+
+    Route::post('/set-champion', [AdminController::class, 'setChampion'])->name('set_champion');
+    Route::post('/seal-quiniela', [AdminController::class, 'toggleSealQuiniela'])->name('seal_quiniela');
+    Route::post('/seal-champion', [AdminController::class, 'toggleSealChampion'])->name('seal_champion');
 });

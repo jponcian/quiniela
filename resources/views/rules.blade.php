@@ -99,6 +99,51 @@
                 </p>
             </div>
         </section>
+
+        <!-- Apuesta al Campeón -->
+        <section class="glass p-8 rounded-[2rem] border border-white/10 relative overflow-hidden group">
+            <div class="absolute -top-6 -right-6 text-8xl opacity-10 grayscale group-hover:grayscale-0 transition duration-500">🏆</div>
+            <h2 class="text-2xl font-black text-white uppercase italic mb-6 flex items-center gap-3">
+                <span class="text-brand-emerald">04.</span> Apuesta al Campeón del Mundial
+            </h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                Una modalidad especial e independiente de la quiniela regular. Los participantes pueden apostar directamente por la selección que consideren se coronará campeona del mundo.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/5">
+                    <div class="text-brand-yellow font-black text-3xl mb-1">$5.00</div>
+                    <div class="text-white font-bold uppercase text-sm mb-2">Costo y Multi-Apuesta</div>
+                    <p class="text-slate-500 text-xs leading-relaxed">Cada selección de equipo tiene un valor de $5.00. Tienes la libertad de apostar por más de una selección para aumentar tus probabilidades (ej. apostar a Brasil y a Francia te costaría $10.00 en total).</p>
+                </div>
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/5">
+                    <div class="text-brand-neon font-black text-3xl mb-1">100%</div>
+                    <div class="text-white font-bold uppercase text-sm mb-2">Pozo Acumulado</div>
+                    <p class="text-slate-500 text-xs leading-relaxed">El 100% del dinero recaudado en esta modalidad formará un pote único. Al finalizar el mundial, todo el pozo se dividirá de manera equitativa únicamente entre los ganadores que hayan acertado al campeón.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reglas de Cierre y Sellado -->
+        <section class="glass p-8 rounded-[2rem] border border-white/10 relative overflow-hidden group">
+            <div class="absolute -top-6 -right-6 text-8xl opacity-10 grayscale group-hover:grayscale-0 transition duration-500">🔒</div>
+            <h2 class="text-2xl font-black text-white uppercase italic mb-6 flex items-center gap-3">
+                <span class="text-brand-emerald">05.</span> Reglas de Cierre y Sellado
+            </h2>
+            <div class="space-y-4 text-slate-400 text-sm leading-relaxed">
+                <div class="flex gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
+                    <div class="text-brand-neon font-bold">1. Límite de Tiempo</div>
+                    <p class="text-xs">Tanto la quiniela regular como las apuestas de campeón cerrarán de forma automática e irreversible **1 hora antes del primer partido del mundial**. Ningún usuario podrá realizar pronósticos ni registrar o modificar apuestas después de este límite.</p>
+                </div>
+                <div class="flex gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
+                    <div class="text-brand-yellow font-bold">2. Sellado Administrativo</div>
+                    <p class="text-xs">El administrador del sistema tiene la facultad de **Sellar (bloquear)** manualmente y de forma inmediata la quiniela o las apuestas de campeón en cualquier momento. Una vez sellada una modalidad, queda totalmente congelada para modificaciones.</p>
+                </div>
+                <div class="flex gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
+                    <div class="text-brand-emerald font-bold">3. Confirmación de Pago</div>
+                    <p class="text-xs">Para las apuestas de campeón, una vez que el administrador confirma y valida el pago en el sistema, dicha apuesta de campeón se considera **sellada individualmente** para ese participante, impidiendo que pueda ser cambiada o eliminada.</p>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Boton Volver -->

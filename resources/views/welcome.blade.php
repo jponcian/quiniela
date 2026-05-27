@@ -44,6 +44,42 @@
     </div>
 </section>
 
+<!-- MODALIDADES DE JUEGO -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+    <!-- Card Quiniela -->
+    <div class="glass p-8 rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-slate-900 via-slate-950 to-brand-emerald/5 relative overflow-hidden group">
+        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-brand-emerald/10 rounded-full blur-2xl group-hover:scale-125 transition duration-500"></div>
+        <div class="flex items-start justify-between mb-4">
+            <span class="text-3xl">⚽</span>
+            <span class="px-3 py-1 rounded-full bg-brand-emerald/10 text-brand-emerald text-[9px] font-black uppercase tracking-widest border border-brand-emerald/20">Inscripción: $10.00</span>
+        </div>
+        <h3 class="text-xl font-black text-white uppercase italic tracking-tight mb-2">La Quiniela Regular</h3>
+        <p class="text-slate-400 text-xs leading-relaxed mb-6">
+            Predice los marcadores exactos de los partidos de la fase de grupos. Suma puntos (5 por pleno, 3 por acierto parcial) para escalar en el ranking y competir por el pozo principal (repartido entre el 1°, 2° y 3° lugar).
+        </p>
+        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">
+            🚨 Cierre: 1 hora antes del primer juego o sellado
+        </div>
+    </div>
+
+    <!-- Card Apuesta Campeón -->
+    <div class="glass p-8 rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-slate-900 via-slate-950 to-brand-yellow/5 relative overflow-hidden group">
+        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-brand-yellow/10 rounded-full blur-2xl group-hover:scale-125 transition duration-500"></div>
+        <div class="flex items-start justify-between mb-4">
+            <span class="text-3xl">🏆</span>
+            <span class="px-3 py-1 rounded-full bg-brand-yellow/10 text-brand-yellow text-[9px] font-black uppercase tracking-widest border border-brand-yellow/20">Costo: $5.00 por equipo</span>
+        </div>
+        <h3 class="text-xl font-black text-white uppercase italic tracking-tight mb-2">Apuesta al Campeón</h3>
+        <p class="text-slate-400 text-xs leading-relaxed mb-6">
+            Elige qué selección ganará la Copa del Mundo 2026. Puedes elegir más de un equipo para diversificar tu apuesta. ¡El 100% de lo recaudado en este bote se repartirá equitativamente entre los ganadores que acierten!
+        </p>
+        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <span>🚨 Cierre: 1 hora antes del primer juego o sellado</span>
+            <a href="{{ route('champion.bets.index') }}" class="text-brand-yellow hover:underline font-black text-[10px] uppercase">Apostar Ahora &rarr;</a>
+        </div>
+    </div>
+</section>
+
 @if($liveGames->count() > 0)
     <section class="mb-12">
         <h2 class="text-xl sm:text-2xl font-black uppercase tracking-tighter italic border-l-4 border-red-500 pl-4 mb-5 flex items-center gap-3">

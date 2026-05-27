@@ -34,9 +34,24 @@ class Game extends Model
             return true;
         }
 
+        // Bloqueo manual administrativo (Sellar Quiniela)
+        if (\App\Models\Setting::get('quiniela_sealed') === '1') {
+            return true;
+        }
+
         // Forzamos la comparación en la zona horaria de Caracas para evitar errores si el servidor está en UTC
-        $matchDate = \Carbon\Carbon::parse($this->getRawOriginal('match_date'), 'America/Caracas');
         $now = now('America/Caracas');
+
+        // Bloqueo global: 1 hora antes del primer partido del mundial
+        $firstGame = self::orderBy('match_date', 'asc')->first();
+        if ($firstGame) {
+            $firstMatchDate = \Carbon\Carbon::parse($firstGame->getRawOriginal('match_date'), 'America/Caracas');
+            if ($now->copy()->addHour()->greaterThanOrEqualTo($firstMatchDate)) {
+                return true;
+            }
+        }
+
+        $matchDate = \Carbon\Carbon::parse($this->getRawOriginal('match_date'), 'America/Caracas');
 
         return $now->addMinutes(15)->greaterThanOrEqualTo($matchDate);
     }
